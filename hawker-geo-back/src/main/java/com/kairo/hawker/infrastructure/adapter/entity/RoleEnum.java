@@ -1,4 +1,4 @@
-package com.kairo.hawker.entity;
+package com.kairo.hawker.infrastructure.adapter.entity;
 
 public enum RoleEnum {
     ROLE_USER,

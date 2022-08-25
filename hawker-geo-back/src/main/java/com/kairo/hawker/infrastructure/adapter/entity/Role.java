@@ -1,4 +1,4 @@
-package com.kairo.hawker.entity;
+package com.kairo.hawker.infrastructure.adapter.entity;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

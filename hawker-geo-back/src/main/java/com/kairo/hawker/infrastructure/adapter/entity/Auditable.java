@@ -1,4 +1,4 @@
-package com.kairo.hawker.entity;
+package com.kairo.hawker.infrastructure.adapter.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
