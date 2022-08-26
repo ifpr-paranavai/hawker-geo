@@ -3,19 +3,19 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hawker_geo/core/model/error/login-error.dart';
+import 'package:hawker_geo/core/persistence/firestore/call-repo.dart';
+import 'package:hawker_geo/core/persistence/firestore/user-repo.dart';
+import 'package:hawker_geo/core/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:hawker_geo/core/error/login-error.dart';
 import 'package:hawker_geo/core/model/loginDTO.dart';
 import 'package:hawker_geo/core/model/status-enum.dart';
 import 'package:hawker_geo/core/model/user.dart';
-import 'package:hawker_geo/persistence/firestore/call-repo.dart';
-import 'package:hawker_geo/persistence/firestore/user-repo.dart';
 import 'package:hawker_geo/ui/shared/login-modal-widget.dart';
 
 import '../../core/model/call.dart';
 import '../../core/model/gender-enum.dart';
 import '../../core/model/role-enum.dart';
-import '../utils/constants.dart';
 
 class HomeController {
   User? _user;
@@ -94,7 +94,7 @@ class HomeController {
     docs.forEach((doc) => {
           if (doc[User.ROLE] != null &&
               doc[User.STATUS] != null &&
-              RoleEnumEnumExtension.fromRaw(doc[User.ROLE]) == RoleEnum.ROLE_ICEMAN &&
+              RoleEnumEnumExtension.fromRaw(doc[User.ROLE]) == RoleEnum.ROLE_HAWKER &&
               StatusEnumExtension.fromRaw(doc[User.STATUS]) != StatusEnum.I)
             {
               users.add(User(

@@ -34,7 +34,7 @@ class UserRepo {
   }
 
   Future<List<User>> findIcemen() async{
-    var res = await userCollection.where('role', isEqualTo: RoleEnum.ROLE_ICEMAN.value).get();
+    var res = await userCollection.where('role', isEqualTo: RoleEnum.ROLE_HAWKER.value).get();
 
     var lista = res.docs.map((doc) => User(
           id: doc.reference.id.toString(),

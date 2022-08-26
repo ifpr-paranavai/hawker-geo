@@ -1,16 +1,16 @@
 // ignore_for_file: constant_identifier_names
 enum RoleEnum {
   ROLE_ADMIN,
-  ROLE_USER,
-  ROLE_ICEMAN,
+  ROLE_CUSTOMER,
+  ROLE_HAWKER,
 }
 
 extension RoleEnumEnumExtension on RoleEnum {
 
   static const Map<RoleEnum, String> values = {
     RoleEnum.ROLE_ADMIN: 'ROLE_ADMIN',
-    RoleEnum.ROLE_USER: 'ROLE_USER',
-    RoleEnum.ROLE_ICEMAN: 'ROLE_ICEMAN',
+    RoleEnum.ROLE_CUSTOMER: 'ROLE_CUSTOMER',
+    RoleEnum.ROLE_HAWKER: 'ROLE_HAWKER',
   };
 
   String? get value => values[this];

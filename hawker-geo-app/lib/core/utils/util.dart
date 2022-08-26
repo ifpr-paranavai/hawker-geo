@@ -6,7 +6,7 @@ import 'package:hawker_geo/ui/theme/colors.dart';
 import '../../core/model/gender-enum.dart';
 import '../../core/model/role-enum.dart';
 import '../../core/model/user.dart';
-import '../../persistence/firestore/user-repo.dart';
+import '../persistence/firestore/user-repo.dart';
 
 class Util {
   gradientIcon(double size, IconData icon, {double startGradient = 0, double endGradient = 0.55}) {
@@ -43,7 +43,7 @@ class Util {
           name: "Iceman $i",
           password: "123456",
           phoneNumber: "asdfasdasd",
-          role: RoleEnum.ROLE_ICEMAN,
+          role: RoleEnum.ROLE_HAWKER,
           urlPhoto: "asdasd",
           username: "iceman$i",
           position: LatLng(-23.07993 + i / 1000, -52.46181 + i / 1000)));

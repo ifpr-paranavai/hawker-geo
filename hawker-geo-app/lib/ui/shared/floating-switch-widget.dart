@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:hawker_geo/ui/utils/util.dart';
+import 'package:hawker_geo/core/utils/util.dart';
 
 class FloatingSwitch extends StatefulWidget {
   FloatingSwitch({Key? key, this.icon, required this.onEnable, required this.onDisable}) : super(key: key);

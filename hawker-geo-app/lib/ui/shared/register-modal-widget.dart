@@ -5,12 +5,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:geolocator/geolocator.dart';
+import 'package:hawker_geo/core/persistence/firestore/user-repo.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:hawker_geo/core/model/gender-enum.dart';
 import 'package:hawker_geo/core/model/role-enum.dart';
 import 'package:hawker_geo/core/model/status-enum.dart';
 import 'package:hawker_geo/core/model/user.dart';
-import 'package:hawker_geo/persistence/firestore/user-repo.dart';
 
 class RegisterModal extends StatefulWidget {
   const RegisterModal({Key? key}) : super(key: key);
@@ -47,7 +47,8 @@ class _RegisterModalState extends State<RegisterModal> {
 
     try {
       await fb.FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: user.email!, password: password)
+          .createUserWithEmailAndPassword(
+              email: user.email!, password: password)
           .then((_) => trySaveToDB());
     } on fb.FirebaseAuthException catch (err) {
       showDialog(
@@ -61,14 +62,15 @@ class _RegisterModalState extends State<RegisterModal> {
   }
 
   trySaveToDB() async {
-    user.role = RoleEnum.ROLE_USER;
+    user.role = RoleEnum.ROLE_CUSTOMER;
     user.active = true;
     user.status = StatusEnum.A;
 
     UserRepo userRepo = UserRepo();
 
     try {
-      var location = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      var location = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
       user.position = LatLng(location.latitude, location.longitude);
       await userRepo.saveOrUpdate(user);
       Navigator.pop(context);
