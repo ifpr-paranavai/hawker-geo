@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 import 'package:intl/intl.dart';
-import 'package:hawker_geo/core/model/status-enum.dart';
+import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/core/model/user.dart';
 
 class Call {

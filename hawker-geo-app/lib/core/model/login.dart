@@ -1,9 +1,9 @@
 // ignore_for_file: constant_identifier_names
 import 'package:latlong2/latlong.dart';
-import 'package:hawker_geo/core/model/role-enum.dart';
-import 'package:hawker_geo/core/model/status-enum.dart';
+import 'package:hawker_geo/core/model/role_enum.dart';
+import 'package:hawker_geo/core/model/status_enum.dart';
 
-import 'gender-enum.dart';
+import 'gender_enum.dart';
 
 class LoginDTO {
   static const String EMAIL = "email";

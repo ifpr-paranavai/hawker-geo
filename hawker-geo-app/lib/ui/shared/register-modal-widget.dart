@@ -5,11 +5,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:geolocator/geolocator.dart';
-import 'package:hawker_geo/core/persistence/firestore/user-repo.dart';
+import 'package:hawker_geo/core/persistence/firestore/user_repo.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:hawker_geo/core/model/gender-enum.dart';
-import 'package:hawker_geo/core/model/role-enum.dart';
-import 'package:hawker_geo/core/model/status-enum.dart';
+import 'package:hawker_geo/core/model/gender_enum.dart';
+import 'package:hawker_geo/core/model/role_enum.dart';
+import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/core/model/user.dart';
 
 class RegisterModal extends StatefulWidget {

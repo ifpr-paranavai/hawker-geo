@@ -3,19 +3,19 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:hawker_geo/core/model/error/login-error.dart';
-import 'package:hawker_geo/core/persistence/firestore/call-repo.dart';
-import 'package:hawker_geo/core/persistence/firestore/user-repo.dart';
+import 'package:hawker_geo/core/model/error/login_error.dart';
+import 'package:hawker_geo/core/persistence/firestore/call_repo.dart';
+import 'package:hawker_geo/core/persistence/firestore/user_repo.dart';
 import 'package:hawker_geo/core/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:hawker_geo/core/model/loginDTO.dart';
-import 'package:hawker_geo/core/model/status-enum.dart';
+import 'package:hawker_geo/core/model/login.dart';
+import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/core/model/user.dart';
 import 'package:hawker_geo/ui/shared/login-modal-widget.dart';
 
 import '../../core/model/call.dart';
-import '../../core/model/gender-enum.dart';
-import '../../core/model/role-enum.dart';
+import '../../core/model/gender_enum.dart';
+import '../../core/model/role_enum.dart';
 
 class HomeController {
   User? _user;

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hawker_geo/ui/shared/register-modal-widget.dart';
 
-import '../../core/model/loginDTO.dart';
+import '../../core/model/login.dart';
 
 class LoginModal extends StatefulWidget {
   const LoginModal({Key? key, this.onLogged}) : super(key: key);

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:hawker_geo/core/model/status-enum.dart';
+import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/ui/theme/colors.dart';
 
-import '../../core/model/gender-enum.dart';
-import '../../core/model/role-enum.dart';
+import '../../core/model/gender_enum.dart';
+import '../../core/model/role_enum.dart';
 import '../../core/model/user.dart';
-import '../persistence/firestore/user-repo.dart';
+import '../persistence/firestore/user_repo.dart';
 
 class Util {
   gradientIcon(double size, IconData icon, {double startGradient = 0, double endGradient = 0.55}) {

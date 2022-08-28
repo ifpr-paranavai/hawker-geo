@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hawker_geo/ui/splash-screen/splash-screen.dart';
+import 'package:hawker_geo/ui/splash_screen/splash_screen.dart';
 import 'package:hawker_geo/ui/theme/texts.dart';
 
 import 'theme/colors.dart';
