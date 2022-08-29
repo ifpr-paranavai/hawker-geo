@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:hawker_geo/ui/shared/register-modal-widget.dart';
+import 'package:hawker_geo/ui/shared/register_modal_widget.dart';
 
 import '../../core/model/login.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'home-widget.dart';
+import 'home_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({

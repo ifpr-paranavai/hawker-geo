@@ -13,7 +13,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:hawker_geo/core/model/login.dart';
 import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/core/model/user.dart';
-import 'package:hawker_geo/ui/shared/login-modal-widget.dart';
+import 'package:hawker_geo/ui/shared/login_modal_widget.dart';
 
 import '../../core/model/call.dart';
 import '../../core/model/gender_enum.dart';

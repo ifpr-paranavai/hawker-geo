@@ -1,25 +1,22 @@
-// ignore_for_file: file_names
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hawker_geo/core/model/hawker_category_enum.dart';
+import 'package:hawker_geo/core/model/role_enum.dart';
+import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/core/persistence/firestore/call_repo.dart';
 import 'package:hawker_geo/core/persistence/firestore/user_repo.dart';
 import 'package:hawker_geo/core/utils/app_images.dart';
 import 'package:hawker_geo/core/utils/constants.dart';
 import 'package:hawker_geo/core/utils/util.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:hawker_geo/core/model/role_enum.dart';
-import 'package:hawker_geo/core/model/status_enum.dart';
-
-import 'package:hawker_geo/ui/home/home-controller.dart';
-import 'package:hawker_geo/ui/shared/floating-switch-widget.dart';
+import 'package:hawker_geo/ui/home/home_controller.dart';
+import 'package:hawker_geo/ui/shared/floating_switch_widget.dart';
 import 'package:hawker_geo/ui/theme/colors.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../../core/model/user.dart';
-import 'home-page.dart';
+import 'home_page.dart';
 
 class HomeWidget extends State<HomeScreen> {
   final HomeController _controller = HomeController();
@@ -262,7 +259,7 @@ class HomeWidget extends State<HomeScreen> {
                                   icon: const Icon(Icons.logout),
                                   label: const Text(
                                     "Sair",
-                                    style: const TextStyle(fontSize: 18),
+                                    style: TextStyle(fontSize: 18),
                                   )),
                             )
                     ],
@@ -292,7 +289,7 @@ class HomeWidget extends State<HomeScreen> {
           call.receiver!.email == _controller.user!.email) {
         if (call.endTime!.isAfter(DateTime.now()) &&
             call.status != StatusEnum.I) {
-          debugPrint("Encontrou receiver " + call.receiver.email);
+          debugPrint("Encontrou receiver ${call.receiver.email}");
           widget = Material(
               color: Colors.transparent,
               child: InkWell(
@@ -351,43 +348,28 @@ class HomeWidget extends State<HomeScreen> {
                     HAWKER_LOOK_RANGE &&
                 (userLocation!.longitude - hawker.position!.longitude).abs() <
                     HAWKER_LOOK_RANGE) {
-              var color =
-                  hawkerCalled != null && hawker.email == hawkerCalled!.email
-                      ? primaryColor
-                      : null;
               markers.add(Marker(
-                  width: 80.0,
-                  height: 80.0,
-                  point: hawker.position!,
-                  builder: (ctx) => AnimatedContainer(
-                        duration: const Duration(milliseconds: 500),
-                        child: Image(
-                          color: color,
-                          image: AssetImage(hawker.hawkerCategory != null
-                              ? _getHawkerIcon(hawker.hawkerCategory!)
-                              : AppImages.categoryBread),
-                        ),
-                      )));
+                width: 80.0,
+                height: 80.0,
+                point: hawker.position!,
+                builder: (ctx) => AnimatedContainer(
+                  duration: const Duration(milliseconds: 500),
+                  child: Transform.scale(
+                    scale: 0.5,
+                    child: Image.asset(
+                      hawker.hawkerCategory != null
+                          ? HawkerCategoryEnumExtension.categoryIcon(
+                              hawker.hawkerCategory!)
+                          : AppImages.categoryBread,
+                    ),
+                  ),
+                ),
+              ));
             }
           }
         }
       }
     }
     return markers;
-  }
-
-  _getHawkerIcon(HawkerCategoryEnum category) {
-    switch (category) {
-      case HawkerCategoryEnum.BREAD:
-        return AppImages.categoryBread;
-      case HawkerCategoryEnum.FRUIT:
-        return AppImages.categoryFruits;
-      case HawkerCategoryEnum.PASTA:
-        return AppImages.categoryPasta;
-      case HawkerCategoryEnum.CANDY:
-        return AppImages.categoryCandy;
-      case HawkerCategoryEnum.POPSICLE:
-        return AppImages.categoryPopsicle;
-    }
   }
 }

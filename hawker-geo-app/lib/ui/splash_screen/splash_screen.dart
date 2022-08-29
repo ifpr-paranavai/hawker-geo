@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hawker_geo/core/utils/app_images.dart';
-import 'package:hawker_geo/ui/home/screen/home-page.dart';
+import 'package:hawker_geo/ui/home/screen/home_page.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 import '../theme/colors.dart';
