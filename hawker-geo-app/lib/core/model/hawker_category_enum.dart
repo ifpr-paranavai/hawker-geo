@@ -7,16 +7,17 @@ enum HawkerCategoryEnum {
   PASTA,
   CANDY,
   POPSICLE,
+  CHURROS,
 }
 
 extension HawkerCategoryEnumExtension on HawkerCategoryEnum {
-
   static const Map<HawkerCategoryEnum, String> values = {
     HawkerCategoryEnum.FRUIT: 'FRUIT',
     HawkerCategoryEnum.BREAD: 'BREAD',
     HawkerCategoryEnum.PASTA: 'PASTA',
     HawkerCategoryEnum.CANDY: 'CANDY',
     HawkerCategoryEnum.POPSICLE: 'POPSICLE',
+    HawkerCategoryEnum.CHURROS: 'CHURROS',
   };
 
   String? get value => values[this];
@@ -36,6 +37,8 @@ extension HawkerCategoryEnumExtension on HawkerCategoryEnum {
         return AppImages.categoryCandy;
       case HawkerCategoryEnum.POPSICLE:
         return AppImages.categoryPopsicle;
+      case HawkerCategoryEnum.CHURROS:
+        return AppImages.categoryChurros;
     }
   }
 }

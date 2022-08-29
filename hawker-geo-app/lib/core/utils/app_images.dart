@@ -6,4 +6,5 @@ class AppImages {
   static String get categoryFruits => "assets/category/fruits.png";
   static String get categoryPasta => "assets/category/pasta.png";
   static String get categoryCandy => "assets/category/candy.png";
+  static String get categoryChurros => "assets/category/churros.png";
 }
