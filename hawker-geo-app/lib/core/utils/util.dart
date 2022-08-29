@@ -39,7 +39,9 @@ class Util {
 
   generateHawker(int quantity) {
     for (int i = 0; i < quantity; i++) {
-      print("Vendedor $i");
+      var category = HawkerCategoryEnum.values
+          .elementAt(Random().nextInt(HawkerCategoryEnum.values.length));
+      print("Vendedor $i | Categoria: ${category.value}");
       UserRepo().saveOrUpdate(User(
           active: true,
           status: StatusEnum.A,
@@ -49,10 +51,9 @@ class Util {
           password: "Teste123879*5454545mn",
           phoneNumber: "44999999999",
           role: RoleEnum.ROLE_HAWKER,
-          urlPhoto: "asdasd",
+          urlPhoto: "",
           username: "hawker$i",
-          hawkerCategory: HawkerCategoryEnum.values
-              .elementAt(Random().nextInt(HawkerCategoryEnum.values.length)),
+          hawkerCategory: category,
           position: LatLng(-23.07993 + i / 1000, -52.46181 + i / 1000)));
     }
   }

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hawker_geo/core/model/error/login_error.dart';
+import 'package:hawker_geo/core/model/hawker_category_enum.dart';
 import 'package:hawker_geo/core/persistence/firestore/call_repo.dart';
 import 'package:hawker_geo/core/persistence/firestore/user_repo.dart';
 import 'package:hawker_geo/core/utils/constants.dart';
@@ -85,38 +86,40 @@ class HomeController {
     if (permission == LocationPermission.denied) {
       await Geolocator.requestPermission();
     }
-    var location = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    var location = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
 
     return LatLng(location.latitude, location.longitude);
   }
 
   docsToUserList(dynamic docs) {
     var users = <User>[];
-    docs.forEach((QueryDocumentSnapshot doc){
-        final dynamic data = doc.data();
+    docs.forEach((QueryDocumentSnapshot doc) {
+      final dynamic data = doc.data();
 
-          if (data[User.ROLE] != null &&
-              data[User.STATUS] != null &&
-              RoleEnumEnumExtension.fromRaw(data[User.ROLE]) == RoleEnum.ROLE_HAWKER &&
-              StatusEnumExtension.fromRaw(data[User.STATUS]) != StatusEnum.I)
-            {
-
-              users.add(User(
-                id: doc.reference.id.toString(),
-                active: data[User.ACTIVE],
-                status: StatusEnumExtension.fromRaw(data[User.STATUS]),
-                name: data[User.NAME],
-                username: data[User.USERNAME],
-                gender: GenderEnumExtension.fromRaw(data[User.GENDER]),
-                password: data[User.PASSWORD],
-                urlPhoto: data[User.URL_PHOTO],
-                email: data[User.EMAIL],
-                phoneNumber: data[User.PHONE_NUMBER],
-                role: RoleEnumEnumExtension.fromRaw(data[User.ROLE]),
-                position: LatLng.fromJson(data[User.POSITION]),
-              ));
-            }
-        });
+      if (data[User.ROLE] != null &&
+          data[User.STATUS] != null &&
+          RoleEnumEnumExtension.fromRaw(data[User.ROLE]) ==
+              RoleEnum.ROLE_HAWKER &&
+          StatusEnumExtension.fromRaw(data[User.STATUS]) != StatusEnum.I) {
+        users.add(User(
+          id: doc.reference.id.toString(),
+          active: data[User.ACTIVE],
+          status: StatusEnumExtension.fromRaw(data[User.STATUS]),
+          name: data[User.NAME],
+          username: data[User.USERNAME],
+          gender: GenderEnumExtension.fromRaw(data[User.GENDER]),
+          password: data[User.PASSWORD],
+          urlPhoto: data[User.URL_PHOTO],
+          email: data[User.EMAIL],
+          phoneNumber: data[User.PHONE_NUMBER],
+          role: RoleEnumEnumExtension.fromRaw(data[User.ROLE]),
+          hawkerCategory:
+              HawkerCategoryEnumExtension.fromRaw(data[User.HAWKER_CATEGORY]),
+          position: LatLng.fromJson(data[User.POSITION]),
+        ));
+      }
+    });
     return users;
   }
 
@@ -142,12 +145,12 @@ class HomeController {
 
   tryLogin(BuildContext context, LoginDTO login) async {
     try {
-      try{
+      try {
         await fb.FirebaseAuth.instance.signInWithEmailAndPassword(
           email: login.email!,
           password: login.password!,
         );
-      }catch(e){
+      } catch (e) {
         print(e);
       }
       await checkUser();
@@ -186,16 +189,20 @@ class HomeController {
     }
   }
 
-  Future<User> createCall(BuildContext context, List<User> icemen, LatLng userLocation) async {
+  Future<User> createCall(
+      BuildContext context, List<User> icemen, LatLng userLocation) async {
     var closestIceman = icemen.first;
 
     for (var iceman in icemen) {
       //Se a long + lat do iceman da vez menos a lat + long do user for menor
       // que o salvo na variável então ele está mais perto
-      var isClose =
-          ((iceman.position!.latitude + iceman.position!.longitude) - (userLocation.latitude + userLocation.longitude)).abs() <
-              ((closestIceman.position!.latitude + closestIceman.position!.longitude) -
-                  (userLocation.latitude + userLocation.longitude)).abs();
+      var isClose = ((iceman.position!.latitude + iceman.position!.longitude) -
+                  (userLocation.latitude + userLocation.longitude))
+              .abs() <
+          ((closestIceman.position!.latitude +
+                      closestIceman.position!.longitude) -
+                  (userLocation.latitude + userLocation.longitude))
+              .abs();
       if (isClose) {
         closestIceman = iceman;
       }
