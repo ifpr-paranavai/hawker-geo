@@ -24,19 +24,19 @@ class _SplashScreenApp extends State<SplashScreenApp> {
         SplashScreen.timer(
           seconds: 3,
           backgroundColor: Colors.white,
-          navigateAfterSeconds: HomeScreen(),
+          navigateAfterSeconds: const HomeScreen(),
           loaderColor: Colors.transparent,
         ),
         Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: const [
+              colors: [
                 primaryColor,
                 secondColor,
               ],
-              stops: const [
+              stops: [
                 0, 0.6
               ],
             ),

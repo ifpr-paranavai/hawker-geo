@@ -46,7 +46,7 @@ class Util {
           email: "hawker_$i@email.com",
           gender: GenderEnum.O,
           name: "Vendedor $i",
-          password: "123456",
+          password: "Teste123879*5454545mn",
           phoneNumber: "44999999999",
           role: RoleEnum.ROLE_HAWKER,
           urlPhoto: "asdasd",

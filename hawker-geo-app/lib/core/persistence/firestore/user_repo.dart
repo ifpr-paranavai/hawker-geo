@@ -83,6 +83,7 @@ class UserRepo {
   saveOrUpdate(User user) async {
     if (user.id.toString().isEmpty || user.id.toString() == 'null') {
       try {
+        await userCollection.doc().set(user.toJson());
         await userCollection.add(user.toJson()).then((DocumentReference doc) =>
             print('DocumentSnapshot added with ID: ${doc.id}'));
       } catch (e) {

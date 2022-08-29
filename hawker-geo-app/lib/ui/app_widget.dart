@@ -22,7 +22,7 @@ class _AppWidget extends State<AppWidget> {
           primaryColor: primaryColor,
           dividerColor: dividerColor,
           accentColor: accentColor),
-      home: SplashScreenApp(),
+      home: const SplashScreenApp(),
     );
   }
 }

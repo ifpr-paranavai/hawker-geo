@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -91,26 +92,29 @@ class HomeController {
 
   docsToUserList(dynamic docs) {
     var users = <User>[];
-    docs.forEach((doc) => {
-          if (doc[User.ROLE] != null &&
-              doc[User.STATUS] != null &&
-              RoleEnumEnumExtension.fromRaw(doc[User.ROLE]) == RoleEnum.ROLE_HAWKER &&
-              StatusEnumExtension.fromRaw(doc[User.STATUS]) != StatusEnum.I)
+    docs.map((QueryDocumentSnapshot doc){
+        final dynamic data = doc.data();
+
+          if (data[User.ROLE] != null &&
+              data[User.STATUS] != null &&
+              RoleEnumEnumExtension.fromRaw(data[User.ROLE]) == RoleEnum.ROLE_HAWKER &&
+              StatusEnumExtension.fromRaw(data[User.STATUS]) != StatusEnum.I)
             {
+
               users.add(User(
-                id: doc.reference.id.toString(),
-                active: doc[User.ACTIVE],
-                status: StatusEnumExtension.fromRaw(doc[User.STATUS]),
-                name: doc[User.NAME],
-                username: doc[User.USERNAME],
-                gender: GenderEnumExtension.fromRaw(doc[User.GENDER]),
-                password: doc[User.PASSWORD],
-                urlPhoto: doc[User.URL_PHOTO],
-                email: doc[User.EMAIL],
-                phoneNumber: doc[User.PHONE_NUMBER],
-                role: RoleEnumEnumExtension.fromRaw(doc[User.ROLE]),
-                position: LatLng.fromJson(doc[User.POSITION]),
-              ))
+                id: data.reference.id.toString(),
+                active: data[User.ACTIVE],
+                status: StatusEnumExtension.fromRaw(data[User.STATUS]),
+                name: data[User.NAME],
+                username: data[User.USERNAME],
+                gender: GenderEnumExtension.fromRaw(data[User.GENDER]),
+                password: data[User.PASSWORD],
+                urlPhoto: data[User.URL_PHOTO],
+                email: data[User.EMAIL],
+                phoneNumber: data[User.PHONE_NUMBER],
+                role: RoleEnumEnumExtension.fromRaw(data[User.ROLE]),
+                position: LatLng.fromJson(data[User.POSITION]),
+              ));
             }
         });
     return users;
@@ -152,7 +156,7 @@ class HomeController {
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Logado com sucesso"),
         ),
       );
@@ -161,7 +165,7 @@ class HomeController {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text("Erro"),
+          title: const Text("Erro"),
           content: Text(err.toString()),
         ),
       );
@@ -170,7 +174,7 @@ class HomeController {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text("Erro de Login"),
+          title: const Text("Erro de Login"),
           content: Text(err.toString()),
         ),
       );
@@ -200,7 +204,7 @@ class HomeController {
         caller: _user,
         receiver: closestIceman,
         startTime: now,
-        endTime: now.add(Duration(minutes: CALL_TIMER)),
+        endTime: now.add(const Duration(minutes: CALL_TIMER)),
         status: StatusEnum.A));
 
     return closestIceman;
