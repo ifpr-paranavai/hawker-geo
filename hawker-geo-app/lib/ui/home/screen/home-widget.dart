@@ -3,7 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hawker_geo/core/model/hawker_category_enum.dart';
 import 'package:hawker_geo/core/persistence/firestore/call_repo.dart';
@@ -62,7 +61,7 @@ class HomeWidget extends State<HomeScreen> {
   }
 
   _startLocationListener() {
-    final LocationSettings locationSettings = LocationSettings(
+    const LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.bestForNavigation,
       distanceFilter: 25,
     );
@@ -144,7 +143,7 @@ class HomeWidget extends State<HomeScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(text),
-        duration: Duration(milliseconds: 800),
+        duration: const Duration(milliseconds: 800),
       ),
     );
   }
@@ -166,7 +165,7 @@ class HomeWidget extends State<HomeScreen> {
           FirebaseFirestore.instance.collection(UserRepo.REPO_NAME).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(
               color: primaryColor,
             ),
@@ -187,7 +186,7 @@ class HomeWidget extends State<HomeScreen> {
                         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                     subdomains: ['a', 'b', 'c'],
                     attributionBuilder: (_) {
-                      return Text(
+                      return const Text(
                         "© OpenStreetMap contributors",
                         style: TextStyle(
                             color: Colors.grey,
@@ -209,16 +208,16 @@ class HomeWidget extends State<HomeScreen> {
                       Container(
                         height: MediaQuery.of(context).size.height * 0.3,
                         width: double.infinity,
-                        padding: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
+                        padding: const EdgeInsets.all(15),
+                        decoration: const BoxDecoration(
                             gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: const [
+                          colors: [
                             primaryColor,
                             secondColor,
                           ],
-                          stops: const [0, 0.55],
+                          stops: [0, 0.55],
                         )),
                         child: !_controller.isLoggedIn()
                             ? null
@@ -227,21 +226,21 @@ class HomeWidget extends State<HomeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Container(
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                           color: Colors.grey,
                                           shape: BoxShape.circle),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.person,
                                         color: Colors.white,
                                         size: 50,
                                       )),
                                   Text(
                                     _controller.user!.name!,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 28, color: Colors.white),
                                   ),
                                   Text(_controller.user!.email!,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 18, color: Colors.white)),
                                 ],
                               ),
@@ -260,10 +259,10 @@ class HomeWidget extends State<HomeScreen> {
                                       Navigator.of(context).pop();
                                     });
                                   },
-                                  icon: Icon(Icons.logout),
-                                  label: Text(
+                                  icon: const Icon(Icons.logout),
+                                  label: const Text(
                                     "Sair",
-                                    style: TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   )),
                             )
                     ],
@@ -297,7 +296,7 @@ class HomeWidget extends State<HomeScreen> {
           widget = Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () => FlutterRingtonePlayer.stop(),
+                onTap: () => null,
                 child: Center(
                   child: Container(
                     decoration: BoxDecoration(
@@ -309,16 +308,16 @@ class HomeWidget extends State<HomeScreen> {
                   ),
                 ),
               ));
-          FlutterRingtonePlayer.play(
-            android: AndroidSounds.alarm,
-            // android: AndroidSounds.ringtone,
-            ios: IosSounds.glass,
-            looping: true,
-            // Android only - API >= 28
-            volume: 1,
-            // Android only - API >= 28
-            asAlarm: false, // Android only - all APIs
-          );
+          // FlutterRingtonePlayer.play(
+          //   android: AndroidSounds.alarm,
+          //   // android: AndroidSounds.ringtone,
+          //   ios: IosSounds.glass,
+          //   looping: true,
+          //   // Android only - API >= 28
+          //   volume: 1,
+          //   // Android only - API >= 28
+          //   asAlarm: false, // Android only - all APIs
+          // );
           break;
         }
       }
@@ -336,7 +335,7 @@ class HomeWidget extends State<HomeScreen> {
           width: 80.0,
           height: 80.0,
           point: userLocation!,
-          builder: (ctx) => Icon(
+          builder: (ctx) => const Icon(
             Icons.place,
             color: Colors.red,
             size: 50,
@@ -361,12 +360,12 @@ class HomeWidget extends State<HomeScreen> {
                   height: 80.0,
                   point: hawker.position!,
                   builder: (ctx) => AnimatedContainer(
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         child: Image(
                           color: color,
                           image: AssetImage(hawker.hawkerCategory != null
                               ? _getHawkerIcon(hawker.hawkerCategory!)
-                              : AppImages.categoryPopsicle),
+                              : AppImages.categoryBread),
                         ),
                       )));
             }
