@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "1018922799653",
-    "project_id": "pops-4877c",
-    "storage_bucket": "pops-4877c.appspot.com"
+    "project_number": "634677206195",
+    "project_id": "hawker-geo-teste",
+    "storage_bucket": "hawker-geo-teste.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1018922799653:android:1e036cd3f861c7d29f65cc",
+        "mobilesdk_app_id": "1:634677206195:android:ee4ad81089c5daf7d7a4c6",
         "android_client_info": {
           "package_name": "com.example.hawker_geo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1018922799653-tm0u4cqen6oeep4p1mpbpg8tvep0g219.apps.googleusercontent.com",
+          "client_id": "634677206195-slkgudjs63bc4ufknnocf782v3kc3q9n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hawker_geo",
+            "certificate_hash": "4b8d0612ed07bf4985c6e95069b7b87de014d4d1"
+          }
+        },
+        {
+          "client_id": "634677206195-folcs1dfkkutuer2perptodo30gl9oot.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDldVQJ1XGiwxWeL5BzBqgxIYobR-218Y8"
+          "current_key": "AIzaSyDagqd76M1Hlufa-A97vlq973modYx3VwY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1018922799653-tm0u4cqen6oeep4p1mpbpg8tvep0g219.apps.googleusercontent.com",
+              "client_id": "634677206195-folcs1dfkkutuer2perptodo30gl9oot.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

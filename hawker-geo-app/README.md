@@ -23,7 +23,7 @@ Clone o repositório e serão necessárias os seguintes passos:
 
 - [Google Firebase] - Firebase é uma plataforma desenvolvida pelo Google para a criação de aplicativos móveis e da web.
 - [Google Firestore] - O Cloud Firestore é um banco de dados flexível e escalonável para desenvolvimento focado em dispositivos móveis, Web e servidores pelo Firebase e do Google Cloud.
-- [Splash Screen] - Dependencia utilizada pra criação de uma splashscreen para o app.
+- [Splash Screen] - Dependência utilizada pra criação de uma splashscreen para o app.
 - [flutter_ringtone_player] - Um plug-in simples de toque, alarme e player de notificação.
 - [flutter_map] - Uma implementação do Dart do [Leaflet] para aplicativos Flutter.
 ## Autor

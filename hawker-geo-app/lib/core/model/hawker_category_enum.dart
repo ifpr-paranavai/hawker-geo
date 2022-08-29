@@ -3,7 +3,7 @@ enum HawkerCategoryEnum {
   FRUIT,
   BREAD,
   PASTA,
-  SWEET,
+  CANDY,
   POPSICLE,
 }
 
@@ -13,7 +13,7 @@ extension HawkerCategoryEnumExtension on HawkerCategoryEnum {
     HawkerCategoryEnum.FRUIT: 'FRUIT',
     HawkerCategoryEnum.BREAD: 'BREAD',
     HawkerCategoryEnum.PASTA: 'PASTA',
-    HawkerCategoryEnum.SWEET: 'SWEET',
+    HawkerCategoryEnum.CANDY: 'CANDY',
     HawkerCategoryEnum.POPSICLE: 'POPSICLE',
   };
 

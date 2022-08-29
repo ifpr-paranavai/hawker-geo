@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:hawker_geo/core/model/hawker_category_enum.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/ui/theme/colors.dart';
@@ -9,7 +12,8 @@ import '../../core/model/user.dart';
 import '../persistence/firestore/user_repo.dart';
 
 class Util {
-  gradientIcon(double size, IconData icon, {double startGradient = 0, double endGradient = 0.55}) {
+  gradientIcon(double size, IconData icon,
+      {double startGradient = 0, double endGradient = 0.55}) {
     return ShaderMask(
       child: SizedBox(
         child: Icon(
@@ -27,25 +31,28 @@ class Util {
             primaryColor,
             secondColor,
           ],
-          stops: [startGradient,endGradient],
+          stops: [startGradient, endGradient],
         ).createShader(rect);
       },
     );
   }
 
-  generateIcemen(int numberOfIceman) {
-    for (int i = 0; i < numberOfIceman; i++) {
+  generateHawker(int quantity) {
+    for (int i = 0; i < quantity; i++) {
+      print("Vendedor $i");
       UserRepo().saveOrUpdate(User(
           active: true,
           status: StatusEnum.A,
-          email: "iceman_$i@email.com",
+          email: "hawker_$i@email.com",
           gender: GenderEnum.O,
-          name: "Iceman $i",
+          name: "Vendedor $i",
           password: "123456",
-          phoneNumber: "asdfasdasd",
+          phoneNumber: "44999999999",
           role: RoleEnum.ROLE_HAWKER,
           urlPhoto: "asdasd",
-          username: "iceman$i",
+          username: "hawker$i",
+          hawkerCategory: HawkerCategoryEnum.values
+              .elementAt(Random().nextInt(HawkerCategoryEnum.values.length)),
           position: LatLng(-23.07993 + i / 1000, -52.46181 + i / 1000)));
     }
   }

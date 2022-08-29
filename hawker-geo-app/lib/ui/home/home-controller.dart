@@ -49,12 +49,12 @@ class HomeController {
     _user = null;
   }
 
-  sendIcemanLocation(LatLng pos) {
+  sendHawkerLocation(LatLng pos) {
     _user!.position = pos;
     _userRepo.saveOrUpdate(_user!);
   }
 
-  clearIcemanPosition() {
+  clearHawkerPosition() {
     _user!.position = LatLng(0, 0);
     _userRepo.saveOrUpdate(user!);
   }

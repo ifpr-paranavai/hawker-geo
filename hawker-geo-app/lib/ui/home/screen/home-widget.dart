@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hawker_geo/core/model/hawker_category_enum.dart';
 import 'package:hawker_geo/core/persistence/firestore/call_repo.dart';
 import 'package:hawker_geo/core/persistence/firestore/user_repo.dart';
+import 'package:hawker_geo/core/utils/app_images.dart';
 import 'package:hawker_geo/core/utils/constants.dart';
 import 'package:hawker_geo/core/utils/util.dart';
 import 'package:latlong2/latlong.dart';
@@ -26,10 +28,10 @@ class HomeWidget extends State<HomeScreen> {
   final Util util = Util();
 
   var callsDocs = [];
-  var icemen = <User>[];
+  var hawker = <User>[];
   LatLng? userLocation;
-  bool icemanGps = false;
-  User? icemanCalled;
+  bool hawkerGps = false;
+  User? hawkerCalled;
 
   @override
   void initState() {
@@ -39,15 +41,20 @@ class HomeWidget extends State<HomeScreen> {
   }
 
   _getUser() async {
+    util.generateHawker(10);
     await _controller.checkUser();
-    if (_controller.getUserRole() != null && _controller.getUserRole() == RoleEnum.ROLE_HAWKER) {
+    if (_controller.getUserRole() != null &&
+        _controller.getUserRole() == RoleEnum.ROLE_HAWKER) {
       _startFirestoreListener();
       _startLocationListener();
     }
   }
 
   _startFirestoreListener() {
-    FirebaseFirestore.instance.collection(CallRepo.REPO_NAME).snapshots().listen((event) {
+    FirebaseFirestore.instance
+        .collection(CallRepo.REPO_NAME)
+        .snapshots()
+        .listen((event) {
       setState(() {
         callsDocs = event.docs;
       });
@@ -59,14 +66,15 @@ class HomeWidget extends State<HomeScreen> {
       accuracy: LocationAccuracy.bestForNavigation,
       distanceFilter: 25,
     );
-    Geolocator.getPositionStream(locationSettings: locationSettings).listen((Position? position) {
+    Geolocator.getPositionStream(locationSettings: locationSettings)
+        .listen((Position? position) {
       if (position != null) {
         setState(() {
           userLocation = LatLng(position.latitude, position.longitude);
         });
         mapController.move(userLocation!, 17);
-        if (icemanGps) {
-          _controller.sendIcemanLocation(userLocation!);
+        if (hawkerGps) {
+          _controller.sendHawkerLocation(userLocation!);
         }
       }
     });
@@ -88,11 +96,12 @@ class HomeWidget extends State<HomeScreen> {
   Widget _floatingCallButton() {
     return FloatingActionButton(
       onPressed: () async {
-        var icemanCalled = await _controller.createCall(context, icemen, userLocation!);
+        var hawkerCalled =
+            await _controller.createCall(context, hawker, userLocation!);
         setState(() {
-          this.icemanCalled = icemanCalled;
+          this.hawkerCalled = hawkerCalled;
         });
-        // var index = icemen.indexWhere((element) => element.email == icemanCalled.email);
+        // var index = hawkers.indexWhere((element) => element.email == hawkerCalled.email);
         // if(index != -1){
         //   i
         // }
@@ -105,12 +114,12 @@ class HomeWidget extends State<HomeScreen> {
   Widget _floatingSwitchButton(BuildContext context) {
     return FloatingSwitch(
       onEnable: () {
-        icemanGps = true;
+        hawkerGps = true;
         _showQuickSnack("GPS ativado", context);
       },
       onDisable: () {
-        _controller.clearIcemanPosition();
-        icemanGps = false;
+        _controller.clearHawkerPosition();
+        hawkerGps = false;
         _showQuickSnack("GPS desativado", context);
       },
       icon: Icons.gps_fixed,
@@ -145,14 +154,16 @@ class HomeWidget extends State<HomeScreen> {
       setState(() {
         userLocation = value;
       });
-      mapController.onReady.then((value) => mapController.move(userLocation!, 17));
+      mapController.onReady
+          .then((value) => mapController.move(userLocation!, 17));
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection(UserRepo.REPO_NAME).snapshots(),
+      stream:
+          FirebaseFirestore.instance.collection(UserRepo.REPO_NAME).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
           return Center(
@@ -161,7 +172,7 @@ class HomeWidget extends State<HomeScreen> {
             ),
           );
         } else {
-          icemen = _controller.docsToUserList(snapshot.data!.docs);
+          hawker = _controller.docsToUserList(snapshot.data!.docs);
           return Stack(
             children: [
               FlutterMap(
@@ -172,18 +183,21 @@ class HomeWidget extends State<HomeScreen> {
                 ),
                 layers: [
                   TileLayerOptions(
-                    urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    urlTemplate:
+                        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                     subdomains: ['a', 'b', 'c'],
                     attributionBuilder: (_) {
                       return Text(
                         "© OpenStreetMap contributors",
                         style: TextStyle(
-                            color: Colors.grey, fontSize: 12, decoration: TextDecoration.none),
+                            color: Colors.grey,
+                            fontSize: 12,
+                            decoration: TextDecoration.none),
                       );
                     },
                   ),
                   MarkerLayerOptions(
-                    markers: _getMarkers(icemen),
+                    markers: _getMarkers(hawker),
                   ),
                 ],
               ),
@@ -213,8 +227,9 @@ class HomeWidget extends State<HomeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Container(
-                                      decoration:
-                                          BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey,
+                                          shape: BoxShape.circle),
                                       child: Icon(
                                         Icons.person,
                                         color: Colors.white,
@@ -222,10 +237,12 @@ class HomeWidget extends State<HomeScreen> {
                                       )),
                                   Text(
                                     _controller.user!.name!,
-                                    style: TextStyle(fontSize: 28, color: Colors.white),
+                                    style: TextStyle(
+                                        fontSize: 28, color: Colors.white),
                                   ),
                                   Text(_controller.user!.email!,
-                                      style: TextStyle(fontSize: 18, color: Colors.white)),
+                                      style: TextStyle(
+                                          fontSize: 18, color: Colors.white)),
                                 ],
                               ),
                       ),
@@ -272,8 +289,10 @@ class HomeWidget extends State<HomeScreen> {
     var calls = _controller.docsToCallsList(callsDocs);
     Widget widget = Container();
     for (var call in calls) {
-      if (_controller.user != null && call.receiver!.email == _controller.user!.email) {
-        if (call.endTime!.isAfter(DateTime.now()) && call.status != StatusEnum.I) {
+      if (_controller.user != null &&
+          call.receiver!.email == _controller.user!.email) {
+        if (call.endTime!.isAfter(DateTime.now()) &&
+            call.status != StatusEnum.I) {
           debugPrint("Encontrou receiver " + call.receiver.email);
           widget = Material(
               color: Colors.transparent,
@@ -285,8 +304,8 @@ class HomeWidget extends State<HomeScreen> {
                         color: Colors.white.withOpacity(0.8),
                         border: Border.all(width: 5, color: primaryColor),
                         borderRadius: BorderRadius.circular(500)),
-                    child:
-                        util.gradientIcon(400, Icons.campaign, startGradient: 0, endGradient: 0.5),
+                    child: util.gradientIcon(400, Icons.campaign,
+                        startGradient: 0, endGradient: 0.5),
                   ),
                 ),
               ));
@@ -307,7 +326,7 @@ class HomeWidget extends State<HomeScreen> {
     return widget;
   }
 
-  List<Marker> _getMarkers(List<User> icemen) {
+  List<Marker> _getMarkers(List<User> hawkers) {
     var markers = <Marker>[];
 
     //Provisório
@@ -325,22 +344,29 @@ class HomeWidget extends State<HomeScreen> {
         ),
       );
 
-      for (var iceman in icemen) {
-        if (iceman.position != null) {
-          if (_controller.user == null || iceman.email != _controller.user!.email) {
-            if ((userLocation!.latitude - iceman.position!.latitude).abs() < ICEMEN_LOOK_RANGE &&
-                (userLocation!.longitude - iceman.position!.longitude).abs() < ICEMEN_LOOK_RANGE) {
+      for (var hawker in hawkers) {
+        if (hawker.position != null) {
+          if (_controller.user == null ||
+              hawker.email != _controller.user!.email) {
+            if ((userLocation!.latitude - hawker.position!.latitude).abs() <
+                    HAWKER_LOOK_RANGE &&
+                (userLocation!.longitude - hawker.position!.longitude).abs() <
+                    HAWKER_LOOK_RANGE) {
               var color =
-                  icemanCalled != null && iceman.email == icemanCalled!.email ? primaryColor : null;
+                  hawkerCalled != null && hawker.email == hawkerCalled!.email
+                      ? primaryColor
+                      : null;
               markers.add(Marker(
                   width: 80.0,
                   height: 80.0,
-                  point: iceman.position!,
+                  point: hawker.position!,
                   builder: (ctx) => AnimatedContainer(
                         duration: Duration(milliseconds: 500),
                         child: Image(
                           color: color,
-                          image: AssetImage("assets/popsicle.png"),
+                          image: AssetImage(hawker.hawkerCategory != null
+                              ? _getHawkerIcon(hawker.hawkerCategory!)
+                              : AppImages.categoryPopsicle),
                         ),
                       )));
             }
@@ -349,5 +375,20 @@ class HomeWidget extends State<HomeScreen> {
       }
     }
     return markers;
+  }
+
+  _getHawkerIcon(HawkerCategoryEnum category) {
+    switch (category) {
+      case HawkerCategoryEnum.BREAD:
+        return AppImages.categoryBread;
+      case HawkerCategoryEnum.FRUIT:
+        return AppImages.categoryFruits;
+      case HawkerCategoryEnum.PASTA:
+        return AppImages.categoryPasta;
+      case HawkerCategoryEnum.CANDY:
+        return AppImages.categoryCandy;
+      case HawkerCategoryEnum.POPSICLE:
+        return AppImages.categoryPopsicle;
+    }
   }
 }
