@@ -3,7 +3,7 @@ import 'package:hawker_geo/core/utils/app_images.dart';
 import 'package:hawker_geo/ui/home/screen/home_page.dart';
 import 'package:splashscreen/splashscreen.dart';
 
-import '../theme/colors.dart';
+import '../styles/color.dart';
 
 class SplashScreenPage extends StatefulWidget {
   const SplashScreenPage({Key? key}) : super(key: key);

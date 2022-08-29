@@ -12,10 +12,11 @@ import 'package:hawker_geo/core/utils/constants.dart';
 import 'package:hawker_geo/core/utils/util.dart';
 import 'package:hawker_geo/ui/home/home_controller.dart';
 import 'package:hawker_geo/ui/shared/floating_switch_widget.dart';
-import 'package:hawker_geo/ui/theme/colors.dart';
+import 'package:hawker_geo/ui/styles/color.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../../core/model/user.dart';
+import '../../styles/text.dart';
 import 'home_page.dart';
 
 class HomeWidget extends State<HomeScreen> {
@@ -39,18 +40,14 @@ class HomeWidget extends State<HomeScreen> {
   _getUser() async {
     // util.generateHawker(10);
     await _controller.checkUser();
-    if (_controller.getUserRole() != null &&
-        _controller.getUserRole() == RoleEnum.ROLE_HAWKER) {
+    if (_controller.getUserRole() != null && _controller.getUserRole() == RoleEnum.ROLE_HAWKER) {
       _startFirestoreListener();
       _startLocationListener();
     }
   }
 
   _startFirestoreListener() {
-    FirebaseFirestore.instance
-        .collection(CallRepo.REPO_NAME)
-        .snapshots()
-        .listen((event) {
+    FirebaseFirestore.instance.collection(CallRepo.REPO_NAME).snapshots().listen((event) {
       setState(() {
         callsDocs = event.docs;
       });
@@ -62,8 +59,7 @@ class HomeWidget extends State<HomeScreen> {
       accuracy: LocationAccuracy.bestForNavigation,
       distanceFilter: 25,
     );
-    Geolocator.getPositionStream(locationSettings: locationSettings)
-        .listen((Position? position) {
+    Geolocator.getPositionStream(locationSettings: locationSettings).listen((Position? position) {
       if (position != null) {
         setState(() {
           userLocation = LatLng(position.latitude, position.longitude);
@@ -92,8 +88,7 @@ class HomeWidget extends State<HomeScreen> {
   Widget _floatingCallButton() {
     return FloatingActionButton(
       onPressed: () async {
-        var hawkerCalled =
-            await _controller.createCall(context, hawkersList, userLocation!);
+        var hawkerCalled = await _controller.createCall(context, hawkersList, userLocation!);
         setState(() {
           this.hawkerCalled = hawkerCalled;
         });
@@ -150,16 +145,14 @@ class HomeWidget extends State<HomeScreen> {
       setState(() {
         userLocation = value;
       });
-      mapController.onReady
-          .then((value) => mapController.move(userLocation!, 17));
+      mapController.onReady.then((value) => mapController.move(userLocation!, 17));
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream:
-          FirebaseFirestore.instance.collection(UserRepo.REPO_NAME).snapshots(),
+      stream: FirebaseFirestore.instance.collection(UserRepo.REPO_NAME).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -179,16 +172,12 @@ class HomeWidget extends State<HomeScreen> {
                 ),
                 layers: [
                   TileLayerOptions(
-                    urlTemplate:
-                        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    urlTemplate: MAP_URL_TEMPLATE,
                     subdomains: ['a', 'b', 'c'],
                     attributionBuilder: (_) {
                       return const Text(
-                        "© OpenStreetMap contributors",
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                            decoration: TextDecoration.none),
+                        MAP_COPYRIGHT,
+                        style: openStreetMapCopyright,
                       );
                     },
                   ),
@@ -224,8 +213,7 @@ class HomeWidget extends State<HomeScreen> {
                                 children: [
                                   Container(
                                       decoration: const BoxDecoration(
-                                          color: Colors.grey,
-                                          shape: BoxShape.circle),
+                                          color: Colors.grey, shape: BoxShape.circle),
                                       child: const Icon(
                                         Icons.person,
                                         color: Colors.white,
@@ -233,12 +221,10 @@ class HomeWidget extends State<HomeScreen> {
                                       )),
                                   Text(
                                     _controller.user!.name!,
-                                    style: const TextStyle(
-                                        fontSize: 28, color: Colors.white),
+                                    style: const TextStyle(fontSize: 28, color: Colors.white),
                                   ),
                                   Text(_controller.user!.email!,
-                                      style: const TextStyle(
-                                          fontSize: 18, color: Colors.white)),
+                                      style: const TextStyle(fontSize: 18, color: Colors.white)),
                                 ],
                               ),
                       ),
@@ -285,10 +271,8 @@ class HomeWidget extends State<HomeScreen> {
     var calls = _controller.docsToCallsList(callsDocs);
     Widget widget = Container();
     for (var call in calls) {
-      if (_controller.user != null &&
-          call.receiver!.email == _controller.user!.email) {
-        if (call.endTime!.isAfter(DateTime.now()) &&
-            call.status != StatusEnum.I) {
+      if (_controller.user != null && call.receiver!.email == _controller.user!.email) {
+        if (call.endTime!.isAfter(DateTime.now()) && call.status != StatusEnum.I) {
           debugPrint("Encontrou receiver ${call.receiver.email}");
           widget = Material(
               color: Colors.transparent,
@@ -300,8 +284,8 @@ class HomeWidget extends State<HomeScreen> {
                         color: Colors.white.withOpacity(0.8),
                         border: Border.all(width: 5, color: primaryColor),
                         borderRadius: BorderRadius.circular(500)),
-                    child: util.gradientIcon(400, Icons.campaign,
-                        startGradient: 0, endGradient: 0.5),
+                    child:
+                        util.gradientIcon(400, Icons.campaign, startGradient: 0, endGradient: 0.5),
                   ),
                 ),
               ));
@@ -342,12 +326,9 @@ class HomeWidget extends State<HomeScreen> {
 
       for (var hawker in hawkers) {
         if (hawker.position != null) {
-          if (_controller.user == null ||
-              hawker.email != _controller.user!.email) {
-            if ((userLocation!.latitude - hawker.position!.latitude).abs() <
-                    HAWKER_LOOK_RANGE &&
-                (userLocation!.longitude - hawker.position!.longitude).abs() <
-                    HAWKER_LOOK_RANGE) {
+          if (_controller.user == null || hawker.email != _controller.user!.email) {
+            if ((userLocation!.latitude - hawker.position!.latitude).abs() < HAWKER_LOOK_RANGE &&
+                (userLocation!.longitude - hawker.position!.longitude).abs() < HAWKER_LOOK_RANGE) {
               markers.add(Marker(
                 width: 80.0,
                 height: 80.0,
@@ -358,8 +339,7 @@ class HomeWidget extends State<HomeScreen> {
                     scale: 0.5,
                     child: Image.asset(
                       hawker.hawkerCategory != null
-                          ? HawkerCategoryEnumExtension.categoryIcon(
-                              hawker.hawkerCategory!)
+                          ? HawkerCategoryEnumExtension.categoryIcon(hawker.hawkerCategory!)
                           : AppImages.categoryBread,
                     ),
                   ),

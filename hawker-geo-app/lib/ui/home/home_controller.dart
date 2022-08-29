@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hawker_geo/core/model/error/login_error.dart';
 import 'package:hawker_geo/core/model/hawker_category_enum.dart';
-import 'package:hawker_geo/core/persistence/firestore/call_repo.dart';
-import 'package:hawker_geo/core/persistence/firestore/user_repo.dart';
-import 'package:hawker_geo/core/utils/constants.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:hawker_geo/core/model/login.dart';
 import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/core/model/user.dart';
+import 'package:hawker_geo/core/persistence/firestore/call_repo.dart';
+import 'package:hawker_geo/core/persistence/firestore/user_repo.dart';
+import 'package:hawker_geo/core/utils/constants.dart';
 import 'package:hawker_geo/ui/shared/login_modal_widget.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../core/model/call.dart';
 import '../../core/model/gender_enum.dart';
@@ -86,8 +86,7 @@ class HomeController {
     if (permission == LocationPermission.denied) {
       await Geolocator.requestPermission();
     }
-    var location = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    var location = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
     return LatLng(location.latitude, location.longitude);
   }
@@ -99,8 +98,7 @@ class HomeController {
 
       if (data[User.ROLE] != null &&
           data[User.STATUS] != null &&
-          RoleEnumEnumExtension.fromRaw(data[User.ROLE]) ==
-              RoleEnum.ROLE_HAWKER &&
+          RoleEnumEnumExtension.fromRaw(data[User.ROLE]) == RoleEnum.ROLE_HAWKER &&
           StatusEnumExtension.fromRaw(data[User.STATUS]) != StatusEnum.I) {
         users.add(User(
           id: doc.reference.id.toString(),
@@ -114,8 +112,7 @@ class HomeController {
           email: data[User.EMAIL],
           phoneNumber: data[User.PHONE_NUMBER],
           role: RoleEnumEnumExtension.fromRaw(data[User.ROLE]),
-          hawkerCategory:
-              HawkerCategoryEnumExtension.fromRaw(data[User.HAWKER_CATEGORY]),
+          hawkerCategory: HawkerCategoryEnumExtension.fromRaw(data[User.HAWKER_CATEGORY]),
           position: LatLng.fromJson(data[User.POSITION]),
         ));
       }
@@ -145,14 +142,10 @@ class HomeController {
 
   tryLogin(BuildContext context, LoginDTO login) async {
     try {
-      try {
-        await fb.FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: login.email!,
-          password: login.password!,
-        );
-      } catch (e) {
-        print(e);
-      }
+      await fb.FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: login.email!,
+        password: login.password!,
+      );
       await checkUser();
 
       if (_user!.status == StatusEnum.I) {
@@ -189,8 +182,7 @@ class HomeController {
     }
   }
 
-  Future<User> createCall(
-      BuildContext context, List<User> icemen, LatLng userLocation) async {
+  Future<User> createCall(BuildContext context, List<User> icemen, LatLng userLocation) async {
     var closestIceman = icemen.first;
 
     for (var iceman in icemen) {
@@ -199,8 +191,7 @@ class HomeController {
       var isClose = ((iceman.position!.latitude + iceman.position!.longitude) -
                   (userLocation.latitude + userLocation.longitude))
               .abs() <
-          ((closestIceman.position!.latitude +
-                      closestIceman.position!.longitude) -
+          ((closestIceman.position!.latitude + closestIceman.position!.longitude) -
                   (userLocation.latitude + userLocation.longitude))
               .abs();
       if (isClose) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'colors.dart';
+import 'color.dart';
 
 const customTextTheme = TextTheme(
   subtitle1: TextStyle(
@@ -30,3 +30,6 @@ const customTextTheme = TextTheme(
   headline5: TextStyle(fontWeight: FontWeight.bold),
   headline6: TextStyle(fontWeight: FontWeight.w400),
 );
+
+const openStreetMapCopyright =
+    TextStyle(color: Colors.grey, fontSize: 12, decoration: TextDecoration.none);

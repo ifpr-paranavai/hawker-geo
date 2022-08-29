@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hawker_geo/core/model/hawker_category_enum.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:hawker_geo/core/model/status_enum.dart';
-import 'package:hawker_geo/ui/theme/colors.dart';
+import 'package:hawker_geo/ui/styles/color.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../core/model/gender_enum.dart';
 import '../../core/model/role_enum.dart';
@@ -12,8 +12,7 @@ import '../../core/model/user.dart';
 import '../persistence/firestore/user_repo.dart';
 
 class Util {
-  gradientIcon(double size, IconData icon,
-      {double startGradient = 0, double endGradient = 0.55}) {
+  gradientIcon(double size, IconData icon, {double startGradient = 0, double endGradient = 0.55}) {
     return ShaderMask(
       child: SizedBox(
         child: Icon(
@@ -39,9 +38,9 @@ class Util {
 
   generateHawker(int quantity) {
     for (int i = 0; i < quantity; i++) {
-      var category = HawkerCategoryEnum.values
-          .elementAt(Random().nextInt(HawkerCategoryEnum.values.length));
-      print("Vendedor $i | Categoria: ${category.value}");
+      var category =
+          HawkerCategoryEnum.values.elementAt(Random().nextInt(HawkerCategoryEnum.values.length));
+      debugPrint("Vendedor $i | Categoria: ${category.value}");
       UserRepo().saveOrUpdate(User(
           active: true,
           status: StatusEnum.A,
