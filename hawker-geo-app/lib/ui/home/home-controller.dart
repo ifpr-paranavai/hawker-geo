@@ -92,7 +92,7 @@ class HomeController {
 
   docsToUserList(dynamic docs) {
     var users = <User>[];
-    docs.map((QueryDocumentSnapshot doc){
+    docs.forEach((QueryDocumentSnapshot doc){
         final dynamic data = doc.data();
 
           if (data[User.ROLE] != null &&
@@ -102,7 +102,7 @@ class HomeController {
             {
 
               users.add(User(
-                id: data.reference.id.toString(),
+                id: doc.reference.id.toString(),
                 active: data[User.ACTIVE],
                 status: StatusEnumExtension.fromRaw(data[User.STATUS]),
                 name: data[User.NAME],
@@ -142,10 +142,14 @@ class HomeController {
 
   tryLogin(BuildContext context, LoginDTO login) async {
     try {
-      await fb.FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: login.email!,
-        password: login.password!,
-      );
+      try{
+        await fb.FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: login.email!,
+          password: login.password!,
+        );
+      }catch(e){
+        print(e);
+      }
       await checkUser();
 
       if (_user!.status == StatusEnum.I) {

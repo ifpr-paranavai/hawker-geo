@@ -27,7 +27,7 @@ class HomeWidget extends State<HomeScreen> {
   final Util util = Util();
 
   var callsDocs = [];
-  var hawker = <User>[];
+  var hawkersList = <User>[];
   LatLng? userLocation;
   bool hawkerGps = false;
   User? hawkerCalled;
@@ -40,7 +40,7 @@ class HomeWidget extends State<HomeScreen> {
   }
 
   _getUser() async {
-    util.generateHawker(10);
+    // util.generateHawker(10);
     await _controller.checkUser();
     if (_controller.getUserRole() != null &&
         _controller.getUserRole() == RoleEnum.ROLE_HAWKER) {
@@ -96,7 +96,7 @@ class HomeWidget extends State<HomeScreen> {
     return FloatingActionButton(
       onPressed: () async {
         var hawkerCalled =
-            await _controller.createCall(context, hawker, userLocation!);
+            await _controller.createCall(context, hawkersList, userLocation!);
         setState(() {
           this.hawkerCalled = hawkerCalled;
         });
@@ -171,7 +171,7 @@ class HomeWidget extends State<HomeScreen> {
             ),
           );
         } else {
-          hawker = _controller.docsToUserList(snapshot.data!.docs);
+          hawkersList = _controller.docsToUserList(snapshot.data!.docs);
           return Stack(
             children: [
               FlutterMap(
@@ -196,7 +196,7 @@ class HomeWidget extends State<HomeScreen> {
                     },
                   ),
                   MarkerLayerOptions(
-                    markers: _getMarkers(hawker),
+                    markers: _getMarkers(hawkersList),
                   ),
                 ],
               ),
