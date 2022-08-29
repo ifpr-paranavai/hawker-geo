@@ -12,7 +12,9 @@ import 'package:hawker_geo/core/model/user.dart';
 import 'package:hawker_geo/core/persistence/firestore/call_repo.dart';
 import 'package:hawker_geo/core/persistence/firestore/user_repo.dart';
 import 'package:hawker_geo/core/utils/constants.dart';
+import 'package:hawker_geo/ui/register/screen/register_page.dart';
 import 'package:hawker_geo/ui/shared/login_modal_widget.dart';
+import 'package:hawker_geo/ui/styles/custom_router.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../core/model/call.dart';
@@ -59,6 +61,10 @@ class HomeController {
   clearHawkerPosition() {
     _user!.position = LatLng(0, 0);
     _userRepo.saveOrUpdate(user!);
+  }
+
+  goToRegister(BuildContext context) {
+    CustomRouter.pushPage(context, const RegisterPage());
   }
 
   Future<void> showLoginModal(BuildContext context) async {

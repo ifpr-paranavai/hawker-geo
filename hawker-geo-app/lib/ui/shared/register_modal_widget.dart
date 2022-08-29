@@ -28,7 +28,7 @@ class _RegisterModalState extends State<RegisterModal> {
     if (user.email == null) {
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) => const AlertDialog(
           title: Text("Erro"),
           content: Text("Preencha o email"),
         ),
@@ -38,7 +38,7 @@ class _RegisterModalState extends State<RegisterModal> {
     if (password != passwordConf) {
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) => const AlertDialog(
           title: Text("Erro"),
           content: Text("As senhas são diferentes"),
         ),
