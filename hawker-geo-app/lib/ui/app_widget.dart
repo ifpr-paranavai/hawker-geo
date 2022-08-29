@@ -4,14 +4,14 @@ import 'package:hawker_geo/ui/theme/texts.dart';
 
 import 'theme/colors.dart';
 
-class AppWidget extends StatefulWidget {
-  const AppWidget({Key? key}) : super(key: key);
+class AppWidgetPage extends StatefulWidget {
+  const AppWidgetPage({Key? key}) : super(key: key);
 
   @override
-  _AppWidget createState() => _AppWidget();
+  AppWidget createState() => AppWidget();
 }
 
-class _AppWidget extends State<AppWidget> {
+class AppWidget extends State<AppWidgetPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,7 +22,7 @@ class _AppWidget extends State<AppWidget> {
           primaryColor: primaryColor,
           dividerColor: dividerColor,
           accentColor: accentColor),
-      home: const SplashScreenApp(),
+      home: const SplashScreenPage(),
     );
   }
 }

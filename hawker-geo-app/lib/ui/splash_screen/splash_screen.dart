@@ -5,14 +5,14 @@ import 'package:splashscreen/splashscreen.dart';
 
 import '../theme/colors.dart';
 
-class SplashScreenApp extends StatefulWidget {
-  const SplashScreenApp({Key? key}) : super(key: key);
+class SplashScreenPage extends StatefulWidget {
+  const SplashScreenPage({Key? key}) : super(key: key);
 
   @override
-  _SplashScreenApp createState() => _SplashScreenApp();
+  SplashScreenWidget createState() => SplashScreenWidget();
 }
 
-class _SplashScreenApp extends State<SplashScreenApp> {
+class SplashScreenWidget extends State<SplashScreenPage> {
   @override
   Widget build(BuildContext context) {
     return _introScreen(context);
@@ -28,25 +28,23 @@ class _SplashScreenApp extends State<SplashScreenApp> {
           loaderColor: Colors.transparent,
         ),
         Container(
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
                 primaryColor,
-                secondColor,
+                fourthColor,
+                // thirdColor,
               ],
-              stops: [
-                0, 0.6
-              ],
-            ),
-            image: DecorationImage(
-              image: AssetImage(
-                AppImages.appIcon,
-              ),
-              // fit: BoxFit.contain,
+              stops: [0.5, 0.8],
             ),
           ),
+          child: Transform.scale(
+              scale: 0.6,
+              child: Image.asset(
+                AppImages.appIcon,
+              )),
         ),
       ],
     );
