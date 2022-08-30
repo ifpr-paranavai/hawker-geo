@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:hawker_geo/ui/styles/text.dart';
 
 import '../../shared/default_next_button.dart';
