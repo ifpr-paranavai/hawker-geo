@@ -1,13 +1,19 @@
+/*
+ * Created by Kairo Amorim on 30/08/2022 16:57
+ * Copyright (c) 2022. All rights reserved.
+ * Last modified 30/08/2022 15:44
+ */
+
 import 'package:flutter/material.dart';
+import 'package:hawker_geo/ui/register/register_controller.dart';
+import 'package:hawker_geo/ui/register/screen/components/register_text_field.dart';
+import 'package:hawker_geo/ui/shared/default_next_button.dart';
 import 'package:hawker_geo/ui/shared/function_widgets.dart';
 import 'package:hawker_geo/ui/styles/text.dart';
 
-import '../../shared/default_next_button.dart';
-import '../register_controller.dart';
-import 'components/register_text_field.dart';
-import 'register_page.dart';
+import 'prime_step_page.dart';
 
-class RegisterWidget extends State<RegisterPage> {
+class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
   final _controller = RegisterController();
 
   var _passwordVisible = false;
@@ -34,6 +40,7 @@ class RegisterWidget extends State<RegisterPage> {
             RegisterTextField(
                 hintText: "E-mail",
                 icon: Icons.email,
+                keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
                   _controller.user.email = value;
                 }),
@@ -63,8 +70,10 @@ class RegisterWidget extends State<RegisterPage> {
             DefaultNextButton(
               "CRIAR CONTA",
               onPressed: () {
-                FunctionWidgets().showLoading(context);
-                _controller.registerUser(context);
+                if (_formKey.currentState!.validate()) {
+                  FunctionWidgets().showLoading(context);
+                  _controller.registerUser(context);
+                }
               },
             )
           ]),

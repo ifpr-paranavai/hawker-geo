@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hawker_geo/ui/shared/gradient_icon.dart';
 
 class RegisterTextField extends StatelessWidget {
@@ -10,6 +11,8 @@ class RegisterTextField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   const RegisterTextField({
     Key? key,
@@ -21,6 +24,8 @@ class RegisterTextField extends StatelessWidget {
     this.validator,
     this.obscureText = false,
     this.onChanged,
+    this.keyboardType,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -35,10 +40,12 @@ class RegisterTextField extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.only(left: icon != null ? 8 : 25, right: 8),
           child: TextFormField(
+            keyboardType: keyboardType,
             onChanged: onChanged,
             validator: validator,
             controller: controller,
             obscureText: obscureText,
+            inputFormatters: inputFormatters,
             decoration: InputDecoration(
                 icon: icon != null
                     ? Material(

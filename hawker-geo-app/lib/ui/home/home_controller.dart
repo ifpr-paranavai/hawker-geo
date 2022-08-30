@@ -12,7 +12,7 @@ import 'package:hawker_geo/core/model/user.dart';
 import 'package:hawker_geo/core/persistence/firestore/call_repo.dart';
 import 'package:hawker_geo/core/persistence/firestore/user_repo.dart';
 import 'package:hawker_geo/core/utils/constants.dart';
-import 'package:hawker_geo/ui/register/screen/register_page.dart';
+import 'package:hawker_geo/ui/register/screen/prime_step/prime_step_page.dart';
 import 'package:hawker_geo/ui/shared/login_modal_widget.dart';
 import 'package:hawker_geo/ui/styles/custom_router.dart';
 import 'package:latlong2/latlong.dart';
@@ -64,7 +64,7 @@ class HomeController {
   }
 
   goToRegister(BuildContext context) {
-    CustomRouter.pushPage(context, const RegisterPage());
+    CustomRouter.pushPage(context, const RegisterPrimeStepPage());
   }
 
   Future<void> showLoginModal(BuildContext context) async {
