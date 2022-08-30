@@ -33,3 +33,13 @@ const customTextTheme = TextTheme(
 
 const openStreetMapCopyright =
     TextStyle(color: Colors.grey, fontSize: 12, decoration: TextDecoration.none);
+
+const boldTitle = TextStyle(
+  fontWeight: FontWeight.bold,
+  fontSize: 22,
+);
+
+const boldButtonText = TextStyle(
+  fontWeight: FontWeight.bold,
+  fontSize: 18,
+);

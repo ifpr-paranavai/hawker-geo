@@ -33,8 +33,8 @@ class SplashScreenWidget extends State<SplashScreenPage> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                primaryColor,
-                fourthColor,
+                kPrimaryColor,
+                kFourthColor,
                 // thirdColor,
               ],
               stops: [0.5, 0.8],

@@ -120,11 +120,12 @@ class HomeWidget extends State<HomeScreen> {
   Widget _floatingLoginButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () async {
-        await _controller.showLoginModal(context).then((_) {
-          _getUserLocation();
-          _getUser();
-          setState(() {});
-        });
+        _controller.goToRegister(context);
+        // await _controller.showLoginModal(context).then((_) {
+        //   _getUserLocation();
+        //   _getUser();
+        //   setState(() {});
+        // });
       },
       child: util.gradientIcon(45, Icons.campaign),
       backgroundColor: Colors.white,
@@ -157,7 +158,7 @@ class HomeWidget extends State<HomeScreen> {
         if (!snapshot.hasData) {
           return const Center(
             child: CircularProgressIndicator(
-              color: primaryColor,
+              color: kPrimaryColor,
             ),
           );
         } else {
@@ -200,8 +201,8 @@ class HomeWidget extends State<HomeScreen> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            primaryColor,
-                            secondColor,
+                            kPrimaryColor,
+                            kSecondColor,
                           ],
                           stops: [0, 0.55],
                         )),
@@ -282,7 +283,7 @@ class HomeWidget extends State<HomeScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.8),
-                        border: Border.all(width: 5, color: primaryColor),
+                        border: Border.all(width: 5, color: kPrimaryColor),
                         borderRadius: BorderRadius.circular(500)),
                     child:
                         util.gradientIcon(400, Icons.campaign, startGradient: 0, endGradient: 0.5),

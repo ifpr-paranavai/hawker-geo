@@ -27,8 +27,8 @@ class Util {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: const [
-            primaryColor,
-            secondColor,
+            kPrimaryColor,
+            kSecondColor,
           ],
           stops: [startGradient, endGradient],
         ).createShader(rect);

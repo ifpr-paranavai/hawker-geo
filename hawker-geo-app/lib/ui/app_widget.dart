@@ -12,15 +12,26 @@ class AppWidgetPage extends StatefulWidget {
 }
 
 class AppWidget extends State<AppWidgetPage> {
+  var theme = ThemeData(
+    fontFamily: 'Open Sans',
+    textTheme: customTextTheme,
+    primarySwatch: Colors.lightBlue,
+    brightness: Brightness.light,
+  );
+
   @override
   Widget build(BuildContext context) {
+    theme = theme.copyWith(
+      colorScheme: theme.colorScheme.copyWith(
+        onSecondary: kFourthColor,
+        onPrimary: const Color(0xffffffff),
+        primary: Colors.lightGreen,
+        secondary: kSecondColor,
+      ),
+    );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          fontFamily: 'Open Sans',
-          textTheme: customTextTheme,
-          primaryColor: primaryColor,
-          dividerColor: dividerColor),
+      theme: theme,
       home: const SplashScreenPage(),
     );
   }
