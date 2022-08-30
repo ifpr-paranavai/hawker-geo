@@ -14,6 +14,7 @@ import 'package:hawker_geo/ui/shared/default_next_button.dart';
 import 'package:hawker_geo/ui/shared/formatters/phone_input_formatter.dart';
 import 'package:hawker_geo/ui/shared/function_widgets.dart';
 import 'package:hawker_geo/ui/shared/gradient_icon.dart';
+import 'package:hawker_geo/ui/shared/shared_pop_ups.dart';
 import 'package:hawker_geo/ui/shared/validators.dart';
 
 import 'second_step_page.dart';
@@ -33,39 +34,61 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Form(
-          key: _formKey,
-          child: ListView(children: [
-            // const Center(child: Text("Registre-se", style: boldTitle)),
-            RegisterTextField(
-                hintText: "Apelido",
-                icon: Icons.person,
-                onChanged: (value) {
-                  _controller.user.name = value;
-                }),
-            RegisterTextField(
-                hintText: "Celular",
-                icon: Icons.email,
-                keyboardType: TextInputType.phone,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly, PhoneInputFormatter()],
-                validator: (value) => _validators.phoneValidator(value),
-                onChanged: (value) {
-                  var number = value.replaceAll(" ", "");
-                  number = number.replaceAll(RegExp(r'[^0-9]'), "");
-                  _controller.user.phoneNumber = number;
-                }),
-            _genderDropdown(),
-            DefaultNextButton(
-              "FINALIZAR",
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  FunctionWidgets().showLoading(context);
-                }
-              },
-            )
-          ]),
+    return WillPopScope(
+      onWillPop: () async {
+        var canPop = false;
+        await SharedPopUps().genericPopUp(
+          context,
+          title: "Deseja sair?",
+          description: "Você poderá continuar o cadastro mais tarde.",
+          acceptButtonText: "Sim",
+          acceptButtonOnPressed: () {
+            canPop = true;
+            Navigator.of(context).pop();
+          },
+          cancelButtonText: "Não",
+          cancelButtonOnPressed: () {
+            canPop = false;
+            Navigator.of(context).pop();
+          },
+        );
+
+        return Future.value(canPop);
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Form(
+            key: _formKey,
+            child: ListView(children: [
+              // const Center(child: Text("Registre-se", style: boldTitle)),
+              RegisterTextField(
+                  hintText: "Apelido",
+                  icon: Icons.person,
+                  onChanged: (value) {
+                    _controller.user.name = value;
+                  }),
+              RegisterTextField(
+                  hintText: "Celular",
+                  icon: Icons.email,
+                  keyboardType: TextInputType.phone,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly, PhoneInputFormatter()],
+                  validator: (value) => _validators.phoneValidator(value),
+                  onChanged: (value) {
+                    var number = value.replaceAll(" ", "");
+                    number = number.replaceAll(RegExp(r'[^0-9]'), "");
+                    _controller.user.phoneNumber = number;
+                  }),
+              _genderDropdown(),
+              DefaultNextButton(
+                "FINALIZAR",
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    FunctionWidgets().showLoading(context);
+                  }
+                },
+              )
+            ]),
+          ),
         ),
       ),
     );
