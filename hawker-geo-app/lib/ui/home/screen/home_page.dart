@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'home_widget.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({
+class HomePage extends StatefulWidget {
+  const HomePage({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => HomeWidget();
+  State<HomePage> createState() => HomeWidget();
 }

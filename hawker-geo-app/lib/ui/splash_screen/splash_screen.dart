@@ -19,15 +19,18 @@ class SplashScreenWidget extends State<SplashScreenPage> {
   }
 
   Widget _introScreen(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Stack(
       children: <Widget>[
         SplashScreen.timer(
           seconds: 3,
           backgroundColor: Colors.white,
-          navigateAfterSeconds: const HomeScreen(),
+          navigateAfterSeconds: const HomePage(),
           loaderColor: Colors.transparent,
         ),
         Container(
+          width: size.width,
+          height: size.height,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,

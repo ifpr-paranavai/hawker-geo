@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hawker_geo/core/model/status_enum.dart';
+import 'package:hawker_geo/ui/shared/function_widgets.dart';
 import 'package:hawker_geo/ui/styles/text.dart';
 
 import '../../shared/default_next_button.dart';
@@ -12,11 +12,14 @@ class RegisterWidget extends State<RegisterPage> {
 
   var _passwordVisible = false;
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Form(
+          key: _formKey,
           child: ListView(children: [
             const Center(child: Text("Registre-se", style: boldTitle)),
             const SizedBox(
@@ -37,7 +40,7 @@ class RegisterWidget extends State<RegisterPage> {
             RegisterTextField(
               hintText: "Senha",
               icon: Icons.lock,
-              obscureText: _passwordVisible,
+              obscureText: !_passwordVisible,
               onChanged: (value) {
                 _controller.user.password = value;
               },
@@ -53,14 +56,15 @@ class RegisterWidget extends State<RegisterPage> {
                           _passwordVisible = !_passwordVisible;
                         });
                       },
-                      icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off)),
+                      icon: Icon(_passwordVisible ? Icons.visibility_off : Icons.visibility)),
                 ),
               ),
             ),
             DefaultNextButton(
               "CRIAR CONTA",
               onPressed: () {
-                _controller.registerUser();
+                FunctionWidgets().showLoading(context);
+                _controller.registerUser(context);
               },
             )
           ]),

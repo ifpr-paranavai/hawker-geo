@@ -19,7 +19,7 @@ import '../../../core/model/user.dart';
 import '../../styles/text.dart';
 import 'home_page.dart';
 
-class HomeWidget extends State<HomeScreen> {
+class HomeWidget extends State<HomePage> {
   final HomeController _controller = HomeController();
   final MapController mapController = MapController();
   final Util util = Util();

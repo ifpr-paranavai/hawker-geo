@@ -8,5 +8,7 @@ const double HAWKER_LOOK_RANGE = 0.002;
 
 const int CALL_TIMER = 3;
 
+const bool WILL_POP_SCOPE = true; // True = somente para testes
+
 const String MAP_URL_TEMPLATE = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const String MAP_COPYRIGHT = "© OpenStreetMap contributors";
