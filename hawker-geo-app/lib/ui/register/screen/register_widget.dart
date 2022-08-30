@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/ui/styles/text.dart';
 
 import '../../shared/default_next_button.dart';
@@ -21,18 +22,25 @@ class RegisterWidget extends State<RegisterPage> {
             const SizedBox(
               height: 50,
             ),
-            const RegisterTextField(
-              hintText: "Nome",
-              icon: Icons.person,
-            ),
-            const RegisterTextField(
-              hintText: "E-mail",
-              icon: Icons.email,
-            ),
+            RegisterTextField(
+                hintText: "Nome",
+                icon: Icons.person,
+                onChanged: (value) {
+                  _controller.user.name = value;
+                }),
+            RegisterTextField(
+                hintText: "E-mail",
+                icon: Icons.email,
+                onChanged: (value) {
+                  _controller.user.email = value;
+                }),
             RegisterTextField(
               hintText: "Senha",
               icon: Icons.lock,
               obscureText: _passwordVisible,
+              onChanged: (value) {
+                _controller.user.password = value;
+              },
               suffixIcon: Transform.scale(
                 scale: 0.7,
                 child: Padding(
@@ -51,7 +59,9 @@ class RegisterWidget extends State<RegisterPage> {
             ),
             DefaultNextButton(
               "CRIAR CONTA",
-              onPressed: () {},
+              onPressed: () {
+                _controller.registerUser();
+              },
             )
           ]),
         ),
