@@ -22,6 +22,7 @@ import 'package:hawker_geo/ui/shared/shared_pop_ups.dart';
 import 'package:hawker_geo/ui/shared/validators.dart';
 import 'package:hawker_geo/ui/styles/color.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:blobs/blobs.dart';
 
 import 'second_step_page.dart';
 
@@ -66,45 +67,80 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
         return Future.value(canPop);
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Form(
             key: _formKey,
-            child: ListView(children: [
-              EditPhotoWidget(
-                image: _image,
-                onPressed: () => _showModalBottomSheet(context),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              // const Center(child: Text("Registre-se", style: boldTitle)),
-              RegisterTextField(
-                  hintText: "Apelido",
-                  icon: Icons.person,
-                  onChanged: (value) {
-                    _controller.user.name = value;
-                  }),
-              RegisterTextField(
-                  hintText: "Celular",
-                  icon: Icons.email,
-                  keyboardType: TextInputType.phone,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly, PhoneInputFormatter()],
-                  validator: (value) => _validators.phoneValidator(value),
-                  onChanged: (value) {
-                    var number = value.replaceAll(" ", "");
-                    number = number.replaceAll(RegExp(r'[^0-9]'), "");
-                    _controller.user.phoneNumber = number;
-                  }),
-              _genderDropdown(),
-              DefaultNextButton(
-                "FINALIZAR",
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    FunctionWidgets().showLoading(context);
-                  }
-                },
-              )
-            ]),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: -260,
+                  right: -170,
+                  child: Blob.fromID(
+                    id: const ['18-4-2319'],
+                    size: 400,
+                    styles: BlobStyles(
+                        gradient:
+                            const LinearGradient(colors: [kPrimaryLightColor, kPrimaryDarkColor])
+                                .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
+                  ),
+                ),
+                Positioned(
+                  bottom: -280,
+                  left: -160,
+                  child: Blob.fromID(
+                    id: const ['8-3-26'],
+                    size: 400,
+                    styles: BlobStyles(
+                        gradient:
+                            const LinearGradient(colors: [kPrimaryLightColor, kPrimaryDarkColor])
+                                .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
+                  ),
+                ),
+                ListView(children: [
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  EditPhotoWidget(
+                    image: _image,
+                    onPressed: () => _showModalBottomSheet(context),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  // const Center(child: Text("Registre-se", style: boldTitle)),
+                  RegisterTextField(
+                      hintText: "Apelido",
+                      icon: Icons.person,
+                      onChanged: (value) {
+                        _controller.user.name = value;
+                      }),
+                  RegisterTextField(
+                      hintText: "Celular",
+                      icon: Icons.email,
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        PhoneInputFormatter()
+                      ],
+                      validator: (value) => _validators.phoneValidator(value),
+                      onChanged: (value) {
+                        var number = value.replaceAll(" ", "");
+                        number = number.replaceAll(RegExp(r'[^0-9]'), "");
+                        _controller.user.phoneNumber = number;
+                      }),
+                  _genderDropdown(),
+                  DefaultNextButton(
+                    "FINALIZAR",
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        FunctionWidgets().showLoading(context);
+                      }
+                    },
+                  )
+                ]),
+              ],
+            ),
           ),
         ),
       ),
