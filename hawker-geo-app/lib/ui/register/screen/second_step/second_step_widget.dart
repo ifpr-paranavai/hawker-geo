@@ -1,6 +1,6 @@
 /*
  * Created by Kairo Amorim on 30/08/2022 17:04
- * Copyright (c) 2022. All rights reserved.
+ * Copyright© 2022. All rights reserved.
  * Last modified 30/08/2022 17:04
  */
 import 'dart:convert';

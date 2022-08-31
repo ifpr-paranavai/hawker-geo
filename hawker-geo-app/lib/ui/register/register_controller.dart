@@ -40,7 +40,8 @@ class RegisterController {
     } on fb.FirebaseAuthException catch (e) {
       Navigator.of(context).pop();
       SharedPopUps().errorPopUp(context,
-          description: "Ocorreu um erro ao finalizar cadastro! Código: ${e.code}", buttonText: "OK");
+          description: "Ocorreu um erro ao finalizar cadastro! Código: ${e.code}",
+          buttonText: "OK");
     } catch (e) {
       Navigator.of(context).pop();
       SharedPopUps().errorPopUp(context,

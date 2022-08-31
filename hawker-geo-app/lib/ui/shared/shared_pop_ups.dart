@@ -1,10 +1,9 @@
 /*
  * Created by Kairo Amorim on 30/08/2022 18:20
- * Copyright (c) 2022. All rights reserved.
+ * Copyright© 2022. All rights reserved.
  * Last modified 30/08/2022 18:20
  */
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../styles/color.dart';
