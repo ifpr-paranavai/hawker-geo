@@ -1,16 +1,17 @@
 // ignore_for_file: constant_identifier_names, file_names
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:hawker_geo/core/model/gender_enum.dart';
 import 'package:hawker_geo/core/model/role_enum.dart';
 import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/core/model/user.dart';
 
-class UserRepo {
+class UserRepository {
   late CollectionReference userCollection;
 
   static const String REPO_NAME = 'user';
 
-  UserRepo() {
+  UserRepository() {
     userCollection = FirebaseFirestore.instance.collection(REPO_NAME);
   }
 
@@ -34,9 +35,7 @@ class UserRepo {
   }
 
   Future<List<User>> findIcemen() async {
-    var res = await userCollection
-        .where('role', isEqualTo: RoleEnum.ROLE_HAWKER.value)
-        .get();
+    var res = await userCollection.where('role', isEqualTo: RoleEnum.ROLE_HAWKER.value).get();
 
     var lista = res.docs.map((doc) => User(
           id: doc.reference.id.toString(),
@@ -82,13 +81,10 @@ class UserRepo {
 
   saveOrUpdate(User user) async {
     if (user.id.toString().isEmpty || user.id.toString() == 'null') {
-      try {
-        await userCollection.doc().set(user.toJson());
-        await userCollection.add(user.toJson()).then((DocumentReference doc) =>
-            print('DocumentSnapshot added with ID: ${doc.id}'));
-      } catch (e) {
-        print(e);
-      }
+      await userCollection.doc().set(user.toJson());
+      // await userCollection
+      //     .add(user.toJson())
+      //     .then((DocumentReference doc) => debugPrint('DocumentSnapshot added with ID: ${doc.id}'));
     } else {
       await userCollection.doc(user.id.toString()).set(user.toJson());
     }

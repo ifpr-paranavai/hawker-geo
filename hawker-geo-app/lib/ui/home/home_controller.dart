@@ -10,7 +10,7 @@ import 'package:hawker_geo/core/model/login.dart';
 import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/core/model/user.dart';
 import 'package:hawker_geo/core/persistence/firestore/call_repo.dart';
-import 'package:hawker_geo/core/persistence/firestore/user_repo.dart';
+import 'package:hawker_geo/core/persistence/firestore/user_repository.dart';
 import 'package:hawker_geo/core/utils/constants.dart';
 import 'package:hawker_geo/ui/register/screen/prime_step/prime_step_page.dart';
 import 'package:hawker_geo/ui/shared/login_modal_widget.dart';
@@ -23,7 +23,7 @@ import '../../core/model/role_enum.dart';
 
 class HomeController {
   User? _user;
-  final UserRepo _userRepo = UserRepo();
+  final UserRepository _userRepo = UserRepository();
   final CallRepo _callRepo = CallRepo();
 
   User? get user => _user;

@@ -11,36 +11,12 @@ import '../styles/color.dart';
 
 class SharedPopUps {
   errorPopUp(BuildContext context,
-      {String? title, required String description, required String buttonText}) async {
-    await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => Center(
-        child: AlertDialog(
-          title: title != null
-              ? Text(
-                  title,
-                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                )
-              : null,
-          content: Text(
-            description,
-            style: Theme.of(context).textTheme.bodyText2!,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                buttonText,
-                style: const TextStyle(fontSize: 20, color: kPrimaryLightColor),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+      {String? title = 'Erro 😢', required String description, required String buttonText}) async {
+    await genericPopUp(context,
+        description: description,
+        cancelButtonText: buttonText,
+        title: title,
+        cancelButtonTextColor: kPrimaryLightColor);
   }
 
   genericPopUp(BuildContext context,
@@ -51,6 +27,7 @@ class SharedPopUps {
       ///Cancel button
       String? cancelButtonText,
       Color? cancelButtonColor,
+      Color? cancelButtonTextColor = kTextColor,
       GestureTapCallback? cancelButtonOnPressed,
 
       ///Accept button
@@ -80,11 +57,11 @@ class SharedPopUps {
                 padding: const EdgeInsets.only(right: 5),
                 child: TextButton(
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(cancelButtonColor)),
-                  onPressed: cancelButtonOnPressed,
+                  onPressed: cancelButtonOnPressed ?? () => Navigator.of(context).pop(),
                   child: Text(
                     cancelButtonText,
-                    style: const TextStyle(
-                        fontSize: 16, color: kTextColor, fontWeight: FontWeight.normal),
+                    style: TextStyle(
+                        fontSize: 16, color: cancelButtonTextColor, fontWeight: FontWeight.normal),
                   ),
                 ),
               ),

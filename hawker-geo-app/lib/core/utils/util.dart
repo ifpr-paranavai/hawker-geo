@@ -11,7 +11,7 @@ import 'package:latlong2/latlong.dart';
 import '../../core/model/gender_enum.dart';
 import '../../core/model/role_enum.dart';
 import '../../core/model/user.dart';
-import '../persistence/firestore/user_repo.dart';
+import '../persistence/firestore/user_repository.dart';
 
 class Util {
   gradientIcon(double size, IconData icon, {double startGradient = 0, double endGradient = 0.55}) {
@@ -43,7 +43,7 @@ class Util {
       var category =
           HawkerCategoryEnum.values.elementAt(Random().nextInt(HawkerCategoryEnum.values.length));
       debugPrint("Vendedor $i | Categoria: ${category.value}");
-      UserRepo().saveOrUpdate(User(
+      UserRepository().saveOrUpdate(User(
           active: true,
           status: StatusEnum.A,
           email: "hawker_$i@email.com",

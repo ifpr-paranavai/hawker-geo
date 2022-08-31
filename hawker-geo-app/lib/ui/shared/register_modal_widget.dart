@@ -5,7 +5,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:geolocator/geolocator.dart';
-import 'package:hawker_geo/core/persistence/firestore/user_repo.dart';
+import 'package:hawker_geo/core/persistence/firestore/user_repository.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:hawker_geo/core/model/gender_enum.dart';
 import 'package:hawker_geo/core/model/role_enum.dart';
@@ -66,7 +66,7 @@ class _RegisterModalState extends State<RegisterModal> {
     user.active = true;
     user.status = StatusEnum.A;
 
-    UserRepo userRepo = UserRepo();
+    UserRepository userRepo = UserRepository();
 
     try {
       var location = await Geolocator.getCurrentPosition(

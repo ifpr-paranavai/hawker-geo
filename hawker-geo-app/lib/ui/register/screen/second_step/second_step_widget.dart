@@ -110,11 +110,13 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
                   ),
                   // const Center(child: Text("Registre-se", style: boldTitle)),
                   RegisterTextField(
-                      hintText: "Apelido",
-                      icon: Icons.person,
-                      onChanged: (value) {
-                        _controller.user.name = value;
-                      }),
+                    hintText: "Apelido",
+                    icon: Icons.person,
+                    onChanged: (value) {
+                      _controller.user.name = value;
+                    },
+                    validator: (value) => _validators.emptyValidator(value),
+                  ),
                   RegisterTextField(
                       hintText: "Celular",
                       icon: Icons.email,
@@ -135,6 +137,7 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         FunctionWidgets().showLoading(context);
+                        _controller.registerObjUser(context);
                       }
                     },
                   )

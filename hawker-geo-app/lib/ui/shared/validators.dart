@@ -14,4 +14,11 @@ class Validators {
     }
     return null;
   }
+
+  emptyValidator(String? value, {String? message}){
+    if (value == null || value.isEmpty) {
+      return message ?? 'Este campo não pode estar vazio';
+    }
+    return null;
+  }
 }

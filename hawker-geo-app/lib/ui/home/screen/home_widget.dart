@@ -7,7 +7,7 @@ import 'package:hawker_geo/core/model/hawker_category_enum.dart';
 import 'package:hawker_geo/core/model/role_enum.dart';
 import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/core/persistence/firestore/call_repo.dart';
-import 'package:hawker_geo/core/persistence/firestore/user_repo.dart';
+import 'package:hawker_geo/core/persistence/firestore/user_repository.dart';
 import 'package:hawker_geo/core/utils/app_images.dart';
 import 'package:hawker_geo/core/utils/constants.dart';
 import 'package:hawker_geo/core/utils/util.dart';
@@ -168,7 +168,7 @@ class HomeWidget extends State<HomePage> {
         }
       },
       child: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection(UserRepo.REPO_NAME).snapshots(),
+        stream: FirebaseFirestore.instance.collection(UserRepository.REPO_NAME).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return const Center(
