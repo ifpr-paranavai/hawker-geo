@@ -4,11 +4,13 @@
  * Last modified 30/08/2022 15:44
  */
 
+import 'package:blobs/blobs.dart';
 import 'package:flutter/material.dart';
 import 'package:hawker_geo/ui/register/register_controller.dart';
 import 'package:hawker_geo/ui/register/screen/components/register_text_field.dart';
 import 'package:hawker_geo/ui/shared/default_next_button.dart';
 import 'package:hawker_geo/ui/shared/function_widgets.dart';
+import 'package:hawker_geo/ui/styles/color.dart';
 import 'package:hawker_geo/ui/styles/text.dart';
 
 import 'prime_step_page.dart';
@@ -23,60 +25,104 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Form(
           key: _formKey,
-          child: ListView(children: [
-            const Center(child: Text("Registre-se", style: boldTitle)),
-            const SizedBox(
-              height: 50,
-            ),
-            RegisterTextField(
-                hintText: "Nome",
-                icon: Icons.person,
-                onChanged: (value) {
-                  _controller.user.name = value;
-                }),
-            RegisterTextField(
-                hintText: "E-mail",
-                icon: Icons.email,
-                keyboardType: TextInputType.emailAddress,
-                onChanged: (value) {
-                  _controller.user.email = value;
-                }),
-            RegisterTextField(
-              hintText: "Senha",
-              icon: Icons.lock,
-              obscureText: !_passwordVisible,
-              onChanged: (value) {
-                _controller.user.password = value;
-              },
-              suffixIcon: Transform.scale(
-                scale: 0.7,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: IconButton(
-                      constraints: const BoxConstraints(minHeight: 1, minWidth: 1),
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
-                      icon: Icon(_passwordVisible ? Icons.visibility_off : Icons.visibility)),
+          child: Stack(
+            children: [
+              Positioned(
+                top: -280,
+                left: -200,
+                child: Blob.fromID(
+                  id: const ['16-5-674332'],
+                  size: 400,
+                  styles: BlobStyles(
+                      gradient:
+                          const LinearGradient(colors: [kPrimaryDarkColor, kPrimaryLightColor])
+                              .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
                 ),
               ),
-            ),
-            DefaultNextButton(
-              "CRIAR CONTA",
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  FunctionWidgets().showLoading(context);
-                  _controller.registerUser(context);
-                }
-              },
-            )
-          ]),
+              Positioned(
+                top: -260,
+                right: -170,
+                child: Blob.fromID(
+                  id: const ['16-5-95'],
+                  size: 400,
+                  styles: BlobStyles(
+                      gradient:
+                          const LinearGradient(colors: [kPrimaryLightColor, kPrimaryDarkColor])
+                              .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
+                ),
+              ),
+              Positioned(
+                bottom: -230,
+                left: -230,
+                child: Blob.fromID(
+                  id: const ['13-2-43'],
+                  size: 400,
+                  styles: BlobStyles(
+                      gradient:
+                          const LinearGradient(colors: [kPrimaryLightColor, kPrimaryDarkColor])
+                              .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
+                ),
+              ),
+              ListView(children: [
+                const SizedBox(
+                  height: 80,
+                ),
+                const Center(child: Text("Registre-se", style: boldTitle)),
+                const SizedBox(
+                  height: 50,
+                ),
+                RegisterTextField(
+                    hintText: "Nome",
+                    icon: Icons.person,
+                    onChanged: (value) {
+                      _controller.user.name = value;
+                    }),
+                RegisterTextField(
+                    hintText: "E-mail",
+                    icon: Icons.email,
+                    keyboardType: TextInputType.emailAddress,
+                    onChanged: (value) {
+                      _controller.user.email = value;
+                    }),
+                RegisterTextField(
+                  hintText: "Senha",
+                  icon: Icons.lock,
+                  obscureText: !_passwordVisible,
+                  onChanged: (value) {
+                    _controller.user.password = value;
+                  },
+                  suffixIcon: Transform.scale(
+                    scale: 0.7,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: IconButton(
+                          constraints: const BoxConstraints(minHeight: 1, minWidth: 1),
+                          padding: EdgeInsets.zero,
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                          icon: Icon(_passwordVisible ? Icons.visibility_off : Icons.visibility)),
+                    ),
+                  ),
+                ),
+                DefaultNextButton(
+                  "CRIAR CONTA",
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      FunctionWidgets().showLoading(context);
+                      _controller.registerUser(context);
+                    }
+                  },
+                )
+              ]),
+            ],
+          ),
         ),
       ),
     );
