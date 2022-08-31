@@ -14,6 +14,7 @@ class User {
   static const String GENDER = 'gender';
   static const String PASSWORD = "password";
   static const String URL_PHOTO = "urlPhoto";
+  static const String BAS64_PHOTO = "base64Photo";
   static const String EMAIL = "email";
   static const String PHONE_NUMBER = "phoneNumber";
   static const String STATUS = "status";
@@ -28,6 +29,7 @@ class User {
   GenderEnum? gender;
   String? password;
   String? urlPhoto;
+  String? base64Photo;
   String? email;
   String? phoneNumber;
   StatusEnum? status;
@@ -43,6 +45,7 @@ class User {
     this.gender,
     this.password,
     this.urlPhoto,
+    this.base64Photo,
     this.email,
     this.phoneNumber,
     this.status,
@@ -61,21 +64,17 @@ class User {
             : null,
         password: json[PASSWORD] as String?,
         urlPhoto: json[URL_PHOTO] as String?,
+        base64Photo: json[BAS64_PHOTO] as String?,
         email: json[EMAIL] as String?,
         phoneNumber: json[PHONE_NUMBER] as String?,
         status: json[STATUS] != null
             ? StatusEnum.values.where((a) => a.value == json[STATUS]).first
             : null,
-        role: json[ROLE] != null
-            ? RoleEnum.values.where((a) => a.value == json[ROLE]).first
-            : null,
+        role: json[ROLE] != null ? RoleEnum.values.where((a) => a.value == json[ROLE]).first : null,
         hawkerCategory: json[HAWKER_CATEGORY] != null
-            ? HawkerCategoryEnum.values
-                .where((a) => a.value == json[HAWKER_CATEGORY])
-                .first
+            ? HawkerCategoryEnum.values.where((a) => a.value == json[HAWKER_CATEGORY]).first
             : null,
-        position:
-            json[POSITION] != null ? LatLng.fromJson(json[POSITION]) : null,
+        position: json[POSITION] != null ? LatLng.fromJson(json[POSITION]) : null,
       );
 
   Map<String, dynamic> toJson() {
@@ -87,13 +86,12 @@ class User {
       GENDER: gender != null ? gender!.value.toString() : gender,
       PASSWORD: password,
       URL_PHOTO: urlPhoto,
+      BAS64_PHOTO: base64Photo,
       EMAIL: email,
       PHONE_NUMBER: phoneNumber,
       STATUS: status != null ? status!.value.toString() : status,
       ROLE: role != null ? role!.value.toString() : role,
-      HAWKER_CATEGORY: hawkerCategory != null
-          ? hawkerCategory!.value.toString()
-          : hawkerCategory,
+      HAWKER_CATEGORY: hawkerCategory != null ? hawkerCategory!.value.toString() : hawkerCategory,
       POSITION: position != null ? position!.toJson() : position,
     };
   }

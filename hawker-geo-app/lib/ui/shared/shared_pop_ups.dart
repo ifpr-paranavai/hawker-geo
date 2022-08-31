@@ -34,7 +34,7 @@ class SharedPopUps {
               },
               child: Text(
                 buttonText,
-                style: const TextStyle(fontSize: 20, color: kPrimaryColor),
+                style: const TextStyle(fontSize: 20, color: kPrimaryLightColor),
               ),
             )
           ],

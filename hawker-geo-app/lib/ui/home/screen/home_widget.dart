@@ -173,7 +173,7 @@ class HomeWidget extends State<HomePage> {
           if (!snapshot.hasData) {
             return const Center(
               child: CircularProgressIndicator(
-                color: kPrimaryColor,
+                color: kPrimaryLightColor,
               ),
             );
           } else {
@@ -216,7 +216,7 @@ class HomeWidget extends State<HomePage> {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                              kPrimaryColor,
+                              kPrimaryLightColor,
                               kSecondColor,
                             ],
                             stops: [0, 0.55],
@@ -299,7 +299,7 @@ class HomeWidget extends State<HomePage> {
                   child: Container(
                     decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.8),
-                        border: Border.all(width: 5, color: kPrimaryColor),
+                        border: Border.all(width: 5, color: kPrimaryLightColor),
                         borderRadius: BorderRadius.circular(500)),
                     child:
                         util.gradientIcon(400, Icons.campaign, startGradient: 0, endGradient: 0.5),

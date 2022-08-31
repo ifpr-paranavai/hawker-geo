@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hawker_geo/core/model/hawker_category_enum.dart';
 import 'package:hawker_geo/core/model/status_enum.dart';
+import 'package:hawker_geo/core/utils/permissions_utils.dart';
 import 'package:hawker_geo/ui/styles/color.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../core/model/gender_enum.dart';
@@ -27,7 +29,7 @@ class Util {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: const [
-            kPrimaryColor,
+            kPrimaryLightColor,
             kSecondColor,
           ],
           stops: [startGradient, endGradient],
@@ -54,6 +56,21 @@ class Util {
           username: "hawker$i",
           hawkerCategory: category,
           position: LatLng(-23.07993 + i / 1000, -52.46181 + i / 1000)));
+    }
+  }
+
+  void getImageFromCameraOrGallery(ImageSource source, Function(XFile image) func) async {
+    bool permissionAccepted = false;
+    if (source == ImageSource.camera) {
+      permissionAccepted = await PermissionsUtils.checkPermissionCamera();
+    } else if (source == ImageSource.gallery) {
+      permissionAccepted = await PermissionsUtils.checkPermissionPhoto();
+    }
+    if (permissionAccepted) {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image != null) {
+        func(image);
+      }
     }
   }
 }

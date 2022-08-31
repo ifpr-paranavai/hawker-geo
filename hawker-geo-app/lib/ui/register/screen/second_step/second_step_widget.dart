@@ -9,9 +9,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hawker_geo/core/model/gender_enum.dart';
-import 'package:hawker_geo/core/utils/permissions_utils.dart';
 import 'package:hawker_geo/ui/register/register_controller.dart';
-import 'package:hawker_geo/ui/register/screen/components/icon_galery.dart';
 import 'package:hawker_geo/ui/register/screen/components/register_dropdown_button.dart';
 import 'package:hawker_geo/ui/register/screen/components/register_text_field.dart';
 import 'package:hawker_geo/ui/shared/custom-behavior.dart';
@@ -19,6 +17,7 @@ import 'package:hawker_geo/ui/shared/default_next_button.dart';
 import 'package:hawker_geo/ui/shared/formatters/phone_input_formatter.dart';
 import 'package:hawker_geo/ui/shared/function_widgets.dart';
 import 'package:hawker_geo/ui/shared/gradient_icon.dart';
+import 'package:hawker_geo/ui/shared/profile_photo/edit_photo_widget.dart';
 import 'package:hawker_geo/ui/shared/shared_pop_ups.dart';
 import 'package:hawker_geo/ui/shared/validators.dart';
 import 'package:hawker_geo/ui/styles/color.dart';
@@ -71,37 +70,11 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
           child: Form(
             key: _formKey,
             child: ListView(children: [
-              Stack(alignment: Alignment.center, fit: StackFit.loose, children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: IconGallery(
-                    borderColor: kPrimaryColor,
-                    borderWidth: 3,
-                    padding: EdgeInsets.all(6),
-                    disabled: false,
-                    icon: Icons.account_circle_sharp.codePoint,
-                    image: _image,
-                    onPressed: () {},
-                    buttonSize: Size(90, 90),
-                    iconSize: 70,
-                  ),
-                ),
-                Positioned(
-                  right: 105,
-                  bottom: -3,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _showModalBottomSheet(context);
-                    },
-                    child: Icon(Icons.add),
-                    style: ElevatedButton.styleFrom(
-                      primary: kPrimaryColor,
-                      shape: CircleBorder(),
-                    ),
-                  ),
-                )
-              ]),
-              SizedBox(
+              EditPhotoWidget(
+                image: _image,
+                onPressed: () => _showModalBottomSheet(context),
+              ),
+              const SizedBox(
                 height: 20,
               ),
               // const Center(child: Text("Registre-se", style: boldTitle)),
@@ -171,9 +144,9 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
         context: context,
         builder: (context) {
           return Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             height: MediaQuery.of(context).size.height * .2,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius:
                     BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30))),
@@ -182,35 +155,35 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
               child: ListView(
                 shrinkWrap: true,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextButton.icon(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.image,
-                        color: kPrimaryColor,
+                        color: kPrimaryLightColor,
                       ),
                       onPressed: () {
-                        _getImage(ImageSource.gallery);
+                        _getPhoto(ImageSource.gallery);
                         Navigator.of(context).pop(_image);
                       },
-                      label: Text(
+                      label: const Text(
                         "Galeria",
-                        style: TextStyle(color: kPrimaryColor),
+                        style: TextStyle(color: kPrimaryLightColor),
                       )),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextButton.icon(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.camera_alt,
-                        color: kPrimaryColor,
+                        color: kPrimaryLightColor,
                       ),
                       onPressed: () {
-                        _getImage(ImageSource.camera);
+                        _getPhoto(ImageSource.camera);
                         Navigator.of(context).pop();
                       },
-                      label: Text("Camera", style: TextStyle(color: kPrimaryColor))),
+                      label: const Text("Camera", style: TextStyle(color: kPrimaryLightColor))),
                 ],
               ),
             ),
@@ -218,37 +191,13 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
         });
   }
 
-  Future _getImage(ImageSource source) async {
-    if (source == ImageSource.camera) {
-      this.getCamera(source);
-    } else if (source == ImageSource.gallery) {
-      this.getGallery(source);
-    }
-  }
-
-  void getGallery(ImageSource source) async {
-    if (await PermissionsUtils.checkPermissionPhoto()) {
-      final image = await ImagePicker().getImage(source: source);
-      if (image != null) {
-        setState(() {
-          _image = File(image.path);
-          _imageFile = _image;
-          imageBase64 = base64Encode(_image!.readAsBytesSync());
-        });
-      }
-    }
-  }
-
-  void getCamera(ImageSource source) async {
-    if (await PermissionsUtils.checkPermissionCamera()) {
-      final image = await ImagePicker().getImage(source: source);
-      if (image != null) {
-        setState(() {
-          _image = File(image.path);
-          _imageFile = _image;
-          imageBase64 = base64Encode(_image!.readAsBytesSync());
-        });
-      }
-    }
+  void _getPhoto(ImageSource source) async {
+    _controller.getProfilePick(
+        source,
+        (image) => setState(() {
+              _image = File(image.path);
+              _imageFile = _image;
+              imageBase64 = base64Encode(_image!.readAsBytesSync());
+            }));
   }
 }

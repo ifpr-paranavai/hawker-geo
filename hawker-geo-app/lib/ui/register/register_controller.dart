@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hawker_geo/core/model/user.dart';
 import 'package:hawker_geo/core/services/register_service.dart';
+import 'package:hawker_geo/core/utils/util.dart';
 import 'package:hawker_geo/ui/register/screen/second_step/second_step_page.dart';
 import 'package:hawker_geo/ui/styles/custom_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterController {
   var user = User();
@@ -20,5 +22,9 @@ class RegisterController {
       // TODO - Tratar e exibir erro
       Navigator.of(context).pop();
     }
+  }
+
+  getProfilePick(ImageSource source, Function(XFile image) func) {
+    Util().getImageFromCameraOrGallery(source, func);
   }
 }

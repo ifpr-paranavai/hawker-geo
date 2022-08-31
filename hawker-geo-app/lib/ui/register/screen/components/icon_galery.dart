@@ -1,9 +1,8 @@
+import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hawker_geo/ui/styles/color.dart';
-import 'dart:typed_data';
-
 
 class IconGallery extends StatelessWidget {
   final int? icon;
@@ -16,21 +15,22 @@ class IconGallery extends StatelessWidget {
   final double borderWidth;
   final EdgeInsetsGeometry? padding;
 
-  IconGallery({
+  const IconGallery({
+    Key? key,
     this.icon,
     this.onPressed,
     this.disabled = false,
     this.buttonSize = const Size(200, 200),
     this.iconSize,
-    this.borderColor = kPrimaryColor,
+    this.borderColor = kPrimaryLightColor,
     this.image,
     this.borderWidth = 5,
     this.padding,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final onPressed = this.disabled ? null : this.onPressed;
+    final onPressed = disabled ? null : this.onPressed;
     return Container(
       padding: padding,
       decoration: BoxDecoration(
@@ -41,8 +41,8 @@ class IconGallery extends StatelessWidget {
           onLongPress: null,
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.zero,
-            primary: this.disabled ? Colors.black45 : kPrimaryColor,
-            shape: CircleBorder(),
+            primary: disabled ? Colors.black45 : kPrimaryLightColor,
+            shape: const CircleBorder(),
             fixedSize: buttonSize,
             elevation: 0,
           ),
@@ -62,15 +62,15 @@ class IconGallery extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           image: DecorationImage(fit: BoxFit.fill, image: MemoryImage(image)),
-          borderRadius: BorderRadius.all(Radius.circular(1000)),
-          color: kPrimaryColor,
+          borderRadius: const BorderRadius.all(Radius.circular(1000)),
+          color: kPrimaryLightColor,
         ),
       );
     } else if (image is String) {
       return Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: kPrimaryColor,
+          color: kPrimaryLightColor,
         ),
         child: ClipOval(
           child: CachedNetworkImage(
@@ -79,9 +79,9 @@ class IconGallery extends StatelessWidget {
             fit: BoxFit.fill,
             placeholder: (context, url) => Container(
               color: Colors.white,
-              child: Center(
+              child: const Center(
                 child: CircularProgressIndicator(
-                  color: kPrimaryColor,
+                  color: kPrimaryLightColor,
                 ),
               ),
             ),
@@ -94,7 +94,7 @@ class IconGallery extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           image: DecorationImage(fit: BoxFit.fill, image: FileImage(image!)),
-          color: kPrimaryColor,
+          color: kPrimaryLightColor,
         ),
       );
     }
