@@ -5,6 +5,8 @@ class AppImages {
 
   static String get hawkerKart => "assets/food_kart.png";
 
+  static String get foodPlaceholder => "assets/food_placeholder.jpg";
+
   /// Category Icons
   static String get categoryPopsicle => "assets/category/popsicle.png";
 

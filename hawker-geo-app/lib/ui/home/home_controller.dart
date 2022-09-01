@@ -116,6 +116,7 @@ class HomeController {
             gender: GenderEnumExtension.fromRaw(data[User.GENDER]),
             password: data[User.PASSWORD],
             urlPhoto: data[User.URL_PHOTO],
+            base64Photo: data[User.BAS64_PHOTO],
             email: data[User.EMAIL],
             phoneNumber: data[User.PHONE_NUMBER],
             role: RoleEnumEnumExtension.fromRaw(data[User.ROLE]),

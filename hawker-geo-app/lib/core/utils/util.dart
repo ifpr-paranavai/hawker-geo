@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hawker_geo/core/model/hawker_category_enum.dart';
 import 'package:hawker_geo/core/model/hawker_details.dart';
 import 'package:hawker_geo/core/model/status_enum.dart';
+import 'package:hawker_geo/core/utils/app_images.dart';
 import 'package:hawker_geo/core/utils/permissions_utils.dart';
 import 'package:hawker_geo/ui/styles/color.dart';
 import 'package:image_picker/image_picker.dart';
@@ -39,7 +43,10 @@ class Util {
     );
   }
 
-  generateHawker(int quantity) {
+  generateHawker(int quantity) async {
+    ByteData bytes = await rootBundle.load(AppImages.foodPlaceholder);
+    var buffer = bytes.buffer;
+    var base64Photo = base64Encode(Uint8List.view(buffer));
     for (int i = 0; i < quantity; i++) {
       var category =
           HawkerCategoryEnum.values.elementAt(Random().nextInt(HawkerCategoryEnum.values.length));
@@ -54,10 +61,14 @@ class Util {
           phoneNumber: "44999999999",
           role: RoleEnum.ROLE_HAWKER,
           urlPhoto: "",
+          base64Photo: base64Photo,
           username: "hawker$i",
           position: LatLng(-23.07993 + i / 1000, -52.46181 + i / 1000),
-          hawkerDetails:
-              HawkerDetails(description: "teasdasdasdasdas", category: category, ratingValue: 3)));
+          hawkerDetails: HawkerDetails(
+              description:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+              category: category,
+              ratingValue: 3)));
     }
   }
 

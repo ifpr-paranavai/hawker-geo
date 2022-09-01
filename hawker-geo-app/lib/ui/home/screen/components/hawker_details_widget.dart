@@ -4,12 +4,15 @@
  * Last modified 31/08/2022 22:47
  */
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hawker_geo/core/model/hawker_category_enum.dart';
 import 'package:hawker_geo/core/model/user.dart';
 import 'package:hawker_geo/core/utils/app_images.dart';
 import 'package:hawker_geo/ui/shared/custom-behavior.dart';
+import 'package:hawker_geo/ui/shared/gradient_icon.dart';
 import 'package:hawker_geo/ui/styles/color.dart';
 import 'package:hawker_geo/ui/styles/text.dart';
 
@@ -55,32 +58,60 @@ class HawkerDetailsWidget extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [const CircleAvatar(), Text(hawker.name!, style: boldTitle)],
+                        children: [
+                          CircleAvatar(
+                              radius: 30,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: MemoryImage(base64Decode(hawker.base64Photo!))),
+                                  borderRadius: const BorderRadius.all(Radius.circular(1000)),
+                                  color: kPrimaryLightColor,
+                                ),
+                              )),
+                          Text(hawker.name!, style: boldTitle),
+                          IconButton(
+                              onPressed: () {},
+                              icon: const GradientIcon(
+                                icon: Icons.campaign,
+                                rectSize: 26,
+                                iconSize: 30,
+                              ))
+                        ],
                       ),
                     ),
-                    const Text(
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(hawker.hawkerDetails?.description ?? ""),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text(
-                          "Categoria:",
-                          style: TextStyle(fontSize: 16),
+                        Text(
+                          "Categoria: ${HawkerCategoryEnumExtension.getEnumName(hawker.hawkerDetails!.category!)}",
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                         ),
-                        Image.asset(
-                          hawker.hawkerDetails!.category != null
-                              ? HawkerCategoryEnumExtension.categoryIcon(
-                                  hawker.hawkerDetails!.category!)
-                              : AppImages.categoryBread,
-                          height: 30,
-                          width: 30,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6),
+                          child: Image.asset(
+                            hawker.hawkerDetails!.category != null
+                                ? HawkerCategoryEnumExtension.categoryIcon(
+                                    hawker.hawkerDetails!.category!)
+                                : AppImages.categoryBread,
+                            height: 30,
+                            width: 30,
+                          ),
                         )
                       ],
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text("Avaliação geral:"),
+                        const Text(
+                          "Avaliação geral:",
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
                         RatingBar.builder(
                           initialRating: hawker.hawkerDetails?.ratingValue ?? 4,
                           ignoreGestures: true,

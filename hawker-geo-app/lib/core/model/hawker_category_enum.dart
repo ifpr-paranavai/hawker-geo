@@ -41,4 +41,21 @@ extension HawkerCategoryEnumExtension on HawkerCategoryEnum {
         return AppImages.categoryChurros;
     }
   }
+
+  static String getEnumName(HawkerCategoryEnum category) {
+    switch (category) {
+      case HawkerCategoryEnum.FRUIT:
+        return "Frutas";
+      case HawkerCategoryEnum.BREAD:
+        return "Pães";
+      case HawkerCategoryEnum.PASTA:
+        return "Massas";
+      case HawkerCategoryEnum.CANDY:
+        return "Doces";
+      case HawkerCategoryEnum.POPSICLE:
+        return "Sorvetes";
+      case HawkerCategoryEnum.CHURROS:
+        return "Churros";
+    }
+  }
 }
