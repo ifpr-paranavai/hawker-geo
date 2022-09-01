@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hawker_geo/core/model/hawker_category_enum.dart';
+import 'package:hawker_geo/core/model/hawker_details.dart';
 import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/core/utils/permissions_utils.dart';
 import 'package:hawker_geo/ui/styles/color.dart';
@@ -54,8 +55,9 @@ class Util {
           role: RoleEnum.ROLE_HAWKER,
           urlPhoto: "",
           username: "hawker$i",
-          hawkerCategory: category,
-          position: LatLng(-23.07993 + i / 1000, -52.46181 + i / 1000)));
+          position: LatLng(-23.07993 + i / 1000, -52.46181 + i / 1000),
+          hawkerDetails:
+              HawkerDetails(description: "teasdasdasdasdas", category: category, ratingValue: 3)));
     }
   }
 

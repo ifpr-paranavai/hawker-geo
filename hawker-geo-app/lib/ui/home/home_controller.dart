@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hawker_geo/core/model/error/login_error.dart';
-import 'package:hawker_geo/core/model/hawker_category_enum.dart';
+import 'package:hawker_geo/core/model/hawker_details.dart';
 import 'package:hawker_geo/core/model/login.dart';
 import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/core/model/user.dart';
@@ -104,23 +104,23 @@ class HomeController {
 
       if (data[User.ROLE] != null &&
           data[User.STATUS] != null &&
+          data[User.HAWKER_DETAILS] != null &&
           RoleEnumEnumExtension.fromRaw(data[User.ROLE]) == RoleEnum.ROLE_HAWKER &&
           StatusEnumExtension.fromRaw(data[User.STATUS]) != StatusEnum.I) {
         users.add(User(
-          id: doc.reference.id.toString(),
-          active: data[User.ACTIVE],
-          status: StatusEnumExtension.fromRaw(data[User.STATUS]),
-          name: data[User.NAME],
-          username: data[User.USERNAME],
-          gender: GenderEnumExtension.fromRaw(data[User.GENDER]),
-          password: data[User.PASSWORD],
-          urlPhoto: data[User.URL_PHOTO],
-          email: data[User.EMAIL],
-          phoneNumber: data[User.PHONE_NUMBER],
-          role: RoleEnumEnumExtension.fromRaw(data[User.ROLE]),
-          hawkerCategory: HawkerCategoryEnumExtension.fromRaw(data[User.HAWKER_CATEGORY]),
-          position: LatLng.fromJson(data[User.POSITION]),
-        ));
+            id: doc.reference.id.toString(),
+            active: data[User.ACTIVE],
+            status: StatusEnumExtension.fromRaw(data[User.STATUS]),
+            name: data[User.NAME],
+            username: data[User.USERNAME],
+            gender: GenderEnumExtension.fromRaw(data[User.GENDER]),
+            password: data[User.PASSWORD],
+            urlPhoto: data[User.URL_PHOTO],
+            email: data[User.EMAIL],
+            phoneNumber: data[User.PHONE_NUMBER],
+            role: RoleEnumEnumExtension.fromRaw(data[User.ROLE]),
+            position: LatLng.fromJson(data[User.POSITION]),
+            hawkerDetails: HawkerDetails.fromJson(data[User.HAWKER_DETAILS])));
       }
     });
     return users;

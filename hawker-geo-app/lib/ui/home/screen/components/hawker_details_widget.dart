@@ -68,8 +68,9 @@ class HawkerDetailsWidget extends StatelessWidget {
                           style: TextStyle(fontSize: 16),
                         ),
                         Image.asset(
-                          hawker.hawkerCategory != null
-                              ? HawkerCategoryEnumExtension.categoryIcon(hawker.hawkerCategory!)
+                          hawker.hawkerDetails!.category != null
+                              ? HawkerCategoryEnumExtension.categoryIcon(
+                                  hawker.hawkerDetails!.category!)
                               : AppImages.categoryBread,
                           height: 30,
                           width: 30,
@@ -81,7 +82,7 @@ class HawkerDetailsWidget extends StatelessWidget {
                       children: [
                         const Text("Avaliação geral:"),
                         RatingBar.builder(
-                          initialRating: 3.5,
+                          initialRating: hawker.hawkerDetails?.ratingValue ?? 4,
                           ignoreGestures: true,
                           minRating: 1,
                           itemSize: 25,
