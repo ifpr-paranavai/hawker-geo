@@ -113,7 +113,7 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
                     hintText: "Apelido",
                     icon: Icons.person,
                     onChanged: (value) {
-                      _controller.user.name = value;
+                      _controller.user.username = value;
                     },
                     validator: (value) => _validators.emptyValidator(value),
                   ),
@@ -237,6 +237,7 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
               _image = File(image.path);
               _imageFile = _image;
               imageBase64 = base64Encode(_image!.readAsBytesSync());
+              _controller.user.base64Photo = imageBase64;
             }));
   }
 }

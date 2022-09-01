@@ -1,7 +1,8 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:hawker_geo/ui/shared/register_modal_widget.dart';
+import 'package:hawker_geo/ui/register/screen/prime_step/prime_step_page.dart';
+import 'package:hawker_geo/ui/styles/custom_router.dart';
 
 import '../../core/model/login.dart';
 
@@ -20,11 +21,11 @@ class _LoginModalState extends State<LoginModal> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(15),
+      padding: const EdgeInsets.all(15),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text(
+          const Text(
             "Entre em sua conta",
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
@@ -32,8 +33,8 @@ class _LoginModalState extends State<LoginModal> {
             onChanged: (val) => setState(() {
               email = val;
             }),
-            style: TextStyle(fontSize: 18),
-            decoration: InputDecoration(
+            style: const TextStyle(fontSize: 18),
+            decoration: const InputDecoration(
               labelText: "Email",
               border: OutlineInputBorder(),
             ),
@@ -43,8 +44,8 @@ class _LoginModalState extends State<LoginModal> {
               password = val;
             }),
             obscureText: true,
-            style: TextStyle(fontSize: 18),
-            decoration: InputDecoration(
+            style: const TextStyle(fontSize: 18),
+            decoration: const InputDecoration(
               labelText: "Senha",
               border: OutlineInputBorder(),
             ),
@@ -53,28 +54,20 @@ class _LoginModalState extends State<LoginModal> {
             widthFactor: 0.8,
             child: ElevatedButton(
               onPressed: () => widget.onLogged!(LoginDTO(password: password, email: email)),
-              child: Text(
+              child: const Text(
                 "Entrar",
                 style: TextStyle(fontSize: 18),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           FractionallySizedBox(
             widthFactor: 0.8,
             child: OutlinedButton(
-              onPressed: () => showModalBottomSheet(
-                context: context,
-                builder: (context) =>
-                    FractionallySizedBox(heightFactor: 0.85, child: RegisterModal()),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                isScrollControlled: true,
-              ),
-              child: Text(
+              onPressed: () => CustomRouter.pushPage(context, const RegisterPrimeStepPage()),
+              child: const Text(
                 "Não tenho conta",
                 style: TextStyle(fontSize: 18),
               ),
