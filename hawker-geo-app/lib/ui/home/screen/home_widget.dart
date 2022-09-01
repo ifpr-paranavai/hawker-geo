@@ -12,7 +12,9 @@ import 'package:hawker_geo/core/utils/app_images.dart';
 import 'package:hawker_geo/core/utils/constants.dart';
 import 'package:hawker_geo/core/utils/util.dart';
 import 'package:hawker_geo/ui/home/home_controller.dart';
+import 'package:hawker_geo/ui/home/screen/components/hawker_details_widget.dart';
 import 'package:hawker_geo/ui/shared/floating_switch_widget.dart';
+import 'package:hawker_geo/ui/shared/loading_widget.dart';
 import 'package:hawker_geo/ui/styles/color.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -171,11 +173,7 @@ class HomeWidget extends State<HomePage> {
         stream: FirebaseFirestore.instance.collection(UserRepository.REPO_NAME).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: kPrimaryLightColor,
-              ),
-            );
+            return const LoadingWidget();
           } else {
             hawkersList = _controller.docsToUserList(snapshot.data!.docs);
             return Stack(
@@ -202,78 +200,91 @@ class HomeWidget extends State<HomePage> {
                     ),
                   ],
                 ),
-                Scaffold(
-                  drawer: Drawer(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.3,
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(15),
-                          decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              kPrimaryLightColor,
-                              kSecondColor,
-                            ],
-                            stops: [0, 0.55],
-                          )),
-                          child: !_controller.isLoggedIn()
-                              ? null
-                              : Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                        decoration: const BoxDecoration(
-                                            color: Colors.grey, shape: BoxShape.circle),
-                                        child: const Icon(
-                                          Icons.person,
-                                          color: Colors.white,
-                                          size: 50,
-                                        )),
-                                    Text(
-                                      _controller.user!.name!,
-                                      style: const TextStyle(fontSize: 28, color: Colors.white),
-                                    ),
-                                    Text(_controller.user!.email!,
-                                        style: const TextStyle(fontSize: 18, color: Colors.white)),
-                                  ],
-                                ),
-                        ),
-                        !_controller.isLoggedIn()
-                            ? Container()
-                            : SizedBox(
-                                width: double.infinity,
-                                height: MediaQuery.of(context).size.height * 0.1,
-                                child: TextButton.icon(
-                                    onPressed: () async {
-                                      _controller.logout().then((_) {
-                                        _getUserLocation();
-                                        _getUser();
-                                        setState(() {});
-                                        Navigator.of(context).pop();
-                                      });
-                                    },
-                                    icon: const Icon(Icons.logout),
-                                    label: const Text(
-                                      "Sair",
-                                      style: TextStyle(fontSize: 18),
-                                    )),
-                              )
-                      ],
-                    ),
+                // Scaffold(
+                //   drawer: Drawer(
+                //     child: Column(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [
+                //         Container(
+                //           height: MediaQuery.of(context).size.height * 0.3,
+                //           width: double.infinity,
+                //           padding: const EdgeInsets.all(15),
+                //           decoration: const BoxDecoration(
+                //               gradient: LinearGradient(
+                //             begin: Alignment.topLeft,
+                //             end: Alignment.bottomRight,
+                //             colors: [
+                //               kPrimaryLightColor,
+                //               kSecondColor,
+                //             ],
+                //             stops: [0, 0.55],
+                //           )),
+                //           child: !_controller.isLoggedIn()
+                //               ? null
+                //               : Column(
+                //                   mainAxisAlignment: MainAxisAlignment.center,
+                //                   crossAxisAlignment: CrossAxisAlignment.center,
+                //                   children: [
+                //                     Container(
+                //                         decoration: const BoxDecoration(
+                //                             color: Colors.grey, shape: BoxShape.circle),
+                //                         child: const Icon(
+                //                           Icons.person,
+                //                           color: Colors.white,
+                //                           size: 50,
+                //                         )),
+                //                     Text(
+                //                       _controller.user!.name!,
+                //                       style: const TextStyle(fontSize: 28, color: Colors.white),
+                //                     ),
+                //                     Text(_controller.user!.email!,
+                //                         style: const TextStyle(fontSize: 18, color: Colors.white)),
+                //                   ],
+                //                 ),
+                //         ),
+                //         !_controller.isLoggedIn()
+                //             ? Container()
+                //             : SizedBox(
+                //                 width: double.infinity,
+                //                 height: MediaQuery.of(context).size.height * 0.1,
+                //                 child: TextButton.icon(
+                //                     onPressed: () async {
+                //                       _controller.logout().then((_) {
+                //                         _getUserLocation();
+                //                         _getUser();
+                //                         setState(() {});
+                //                         Navigator.of(context).pop();
+                //                       });
+                //                     },
+                //                     icon: const Icon(Icons.logout),
+                //                     label: const Text(
+                //                       "Sair",
+                //                       style: TextStyle(fontSize: 18),
+                //                     )),
+                //               )
+                //       ],
+                //     ),
+                //   ),
+                //   appBar: AppBar(
+                //     backgroundColor: Colors.transparent,
+                //     foregroundColor: Colors.black,
+                //     shadowColor: Colors.transparent,
+                //   ),
+                //   backgroundColor: Colors.transparent,
+                //   floatingActionButton: _getFloatingButton(context),
+                // ),
+                Positioned(
+                  bottom: 10,
+                  right: 10,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      setState(() {
+                        mapController.move(userLocation!, 17);
+                      });
+                    },
+                    backgroundColor: kPrimaryLightColor,
+                    child: const Icon(Icons.share_location, color: kThirdColor),
                   ),
-                  appBar: AppBar(
-                    backgroundColor: Colors.transparent,
-                    foregroundColor: Colors.black,
-                    shadowColor: Colors.transparent,
-                  ),
-                  backgroundColor: Colors.transparent,
-                  floatingActionButton: _getFloatingButton(context),
                 ),
                 _receiveCall(context),
               ],
@@ -354,10 +365,18 @@ class HomeWidget extends State<HomePage> {
                   duration: const Duration(milliseconds: 500),
                   child: Transform.scale(
                     scale: 0.5,
-                    child: Image.asset(
-                      hawker.hawkerCategory != null
-                          ? HawkerCategoryEnumExtension.categoryIcon(hawker.hawkerCategory!)
-                          : AppImages.categoryBread,
+                    child: Material(
+                      color: kThirdColor.withOpacity(0.4),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(100),
+                        onTap: () => _showHawkerDetails(context, hawker),
+                        child: Image.asset(
+                          hawker.hawkerCategory != null
+                              ? HawkerCategoryEnumExtension.categoryIcon(hawker.hawkerCategory!)
+                              : AppImages.categoryBread,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -368,5 +387,17 @@ class HomeWidget extends State<HomePage> {
       }
     }
     return markers;
+  }
+
+  _showHawkerDetails(BuildContext context, User hawker) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) {
+        return HawkerDetailsWidget(
+          hawker: hawker,
+        );
+      },
+    );
   }
 }
