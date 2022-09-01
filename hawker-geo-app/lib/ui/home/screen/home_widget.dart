@@ -173,7 +173,10 @@ class HomeWidget extends State<HomePage> {
       },
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: const HomeDrawerWidget(),
+        drawer: HomeDrawerWidget(
+            user: _controller.user,
+            isLogged: _controller.isLoggedIn(),
+            registerOnPressed: () => _controller.goToRegister(context)),
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection(UserRepository.REPO_NAME).snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -245,7 +248,7 @@ class HomeWidget extends State<HomePage> {
           widget = Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () => null,
+                onTap: () {},
                 child: Center(
                   child: Container(
                     decoration: BoxDecoration(

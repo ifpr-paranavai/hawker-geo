@@ -5,16 +5,23 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:hawker_geo/core/model/user.dart';
 import 'package:hawker_geo/ui/styles/color.dart';
 
 class HomeDrawerWidget extends StatelessWidget {
-  const HomeDrawerWidget({Key? key}) : super(key: key);
+  final bool isLogged;
+  final User? user;
+  final VoidCallback? loginOnPressed;
+  final VoidCallback? registerOnPressed;
+
+  const HomeDrawerWidget(
+      {Key? key, required this.isLogged, this.loginOnPressed, this.registerOnPressed, this.user})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
             height: MediaQuery.of(context).size.height * 0.25,
@@ -30,8 +37,20 @@ class HomeDrawerWidget extends StatelessWidget {
               ],
               stops: [0, 0.55],
             )),
-            child: Column(children: const []),
+            child: Column(children: [
+              if (isLogged && user != null) ...[Text("Bem vindo ${user!.name}")]
+            ]),
           ),
+          if (!isLogged) ...[
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextButton(onPressed: loginOnPressed, child: const Text("Login")),
+                const Text("ou"),
+                TextButton(onPressed: registerOnPressed, child: const Text("Cadastro"))
+              ],
+            )
+          ]
         ],
       ),
     );
