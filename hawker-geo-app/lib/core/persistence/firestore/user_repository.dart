@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names, file_names
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:hawker_geo/core/model/gender_enum.dart';
+import 'package:hawker_geo/core/model/hawker_details.dart';
 import 'package:hawker_geo/core/model/role_enum.dart';
 import 'package:hawker_geo/core/model/status_enum.dart';
 import 'package:hawker_geo/core/model/user.dart';
@@ -58,18 +58,19 @@ class UserRepository {
     if (res.docs.isNotEmpty) {
       var doc = res.docs[0];
       return User(
-        id: doc.reference.id.toString(),
-        active: doc[User.ACTIVE],
-        name: doc[User.NAME],
-        username: doc[User.USERNAME],
-        gender: GenderEnumExtension.fromRaw(doc[User.GENDER]),
-        password: doc[User.PASSWORD],
-        urlPhoto: doc[User.URL_PHOTO],
-        status: StatusEnumExtension.fromRaw(doc[User.STATUS]),
-        email: doc[User.EMAIL],
-        phoneNumber: doc[User.PHONE_NUMBER],
-        role: RoleEnumEnumExtension.fromRaw(doc[User.ROLE]),
-      );
+          id: doc.reference.id.toString(),
+          active: doc[User.ACTIVE],
+          name: doc[User.NAME],
+          username: doc[User.USERNAME],
+          gender: GenderEnumExtension.fromRaw(doc[User.GENDER]),
+          password: doc[User.PASSWORD],
+          urlPhoto: doc[User.URL_PHOTO],
+          base64Photo: doc[User.BAS64_PHOTO],
+          status: StatusEnumExtension.fromRaw(doc[User.STATUS]),
+          email: doc[User.EMAIL],
+          phoneNumber: doc[User.PHONE_NUMBER],
+          role: RoleEnumEnumExtension.fromRaw(doc[User.ROLE]),
+          hawkerDetails: HawkerDetails.fromJson(doc[User.HAWKER_DETAILS]));
     } else {
       return null;
     }

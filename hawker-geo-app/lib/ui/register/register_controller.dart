@@ -19,7 +19,7 @@ class RegisterController {
 
   registerUser(BuildContext context) async {
     try {
-      Navigator.of(context).pop(); // fechar loading
+      // Navigator.of(context).pop(); // fechar loading
       // CustomRouter.pushReplacement(context, RegisterSecondStepPage(user: user));
       await _service.registerAuthUser(user).then((_) {
         Navigator.of(context).pop(); // fechar loading

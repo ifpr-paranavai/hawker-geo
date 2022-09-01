@@ -173,10 +173,19 @@ class HomeWidget extends State<HomePage> {
       },
       child: Scaffold(
         key: _scaffoldKey,
+        resizeToAvoidBottomInset: false,
         drawer: HomeDrawerWidget(
           user: _controller.user,
           isLogged: _controller.isLoggedIn(),
           registerOnPressed: () => _controller.goToRegister(context),
+          logoutOnPressed: () async {
+            _controller.logout().then((_) {
+              _getUserLocation();
+              _getUser();
+              setState(() {});
+              _scaffoldKey.currentState?.closeDrawer();
+            });
+          },
           loginOnPressed: () async {
             await _controller.showLoginModal(context).then((_) {
               _getUserLocation();
