@@ -13,6 +13,7 @@ import 'package:hawker_geo/core/utils/constants.dart';
 import 'package:hawker_geo/core/utils/util.dart';
 import 'package:hawker_geo/ui/home/home_controller.dart';
 import 'package:hawker_geo/ui/home/screen/components/hawker_details_widget.dart';
+import 'package:hawker_geo/ui/home/screen/components/home_drawer_widget.dart';
 import 'package:hawker_geo/ui/shared/floating_switch_widget.dart';
 import 'package:hawker_geo/ui/shared/loading_widget.dart';
 import 'package:hawker_geo/ui/styles/color.dart';
@@ -23,6 +24,7 @@ import '../../styles/text.dart';
 import 'home_page.dart';
 
 class HomeWidget extends State<HomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final HomeController _controller = HomeController();
   final MapController mapController = MapController();
   final Util util = Util();
@@ -169,128 +171,66 @@ class HomeWidget extends State<HomePage> {
           return Future.value(true);
         }
       },
-      child: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection(UserRepository.REPO_NAME).snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return const LoadingWidget();
-          } else {
-            hawkersList = _controller.docsToUserList(snapshot.data!.docs);
-            return Stack(
-              children: [
-                FlutterMap(
-                  mapController: mapController,
-                  options: MapOptions(
-                    center: userLocation ?? BRAZIL_LAT_LONG,
-                    zoom: 4,
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawer: const HomeDrawerWidget(),
+        body: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection(UserRepository.REPO_NAME).snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return const LoadingWidget();
+            } else {
+              hawkersList = _controller.docsToUserList(snapshot.data!.docs);
+              return Stack(
+                children: [
+                  FlutterMap(
+                    mapController: mapController,
+                    options: MapOptions(
+                      center: userLocation ?? BRAZIL_LAT_LONG,
+                      zoom: 4,
+                    ),
+                    layers: [
+                      TileLayerOptions(
+                        urlTemplate: MAP_URL_TEMPLATE,
+                        subdomains: ['a', 'b', 'c'],
+                        attributionBuilder: (_) {
+                          return const Text(
+                            MAP_COPYRIGHT,
+                            style: openStreetMapCopyright,
+                          );
+                        },
+                      ),
+                      MarkerLayerOptions(
+                        markers: _getMarkers(hawkersList),
+                      ),
+                    ],
                   ),
-                  layers: [
-                    TileLayerOptions(
-                      urlTemplate: MAP_URL_TEMPLATE,
-                      subdomains: ['a', 'b', 'c'],
-                      attributionBuilder: (_) {
-                        return const Text(
-                          MAP_COPYRIGHT,
-                          style: openStreetMapCopyright,
-                        );
+                  Positioned(
+                    bottom: 10,
+                    right: 10,
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        setState(() {
+                          mapController.move(userLocation!, 17);
+                        });
                       },
+                      backgroundColor: kPrimaryLightColor,
+                      child: const Icon(Icons.share_location, color: kThirdColor),
                     ),
-                    MarkerLayerOptions(
-                      markers: _getMarkers(hawkersList),
-                    ),
-                  ],
-                ),
-                // Scaffold(
-                //   drawer: Drawer(
-                //     child: Column(
-                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //       children: [
-                //         Container(
-                //           height: MediaQuery.of(context).size.height * 0.3,
-                //           width: double.infinity,
-                //           padding: const EdgeInsets.all(15),
-                //           decoration: const BoxDecoration(
-                //               gradient: LinearGradient(
-                //             begin: Alignment.topLeft,
-                //             end: Alignment.bottomRight,
-                //             colors: [
-                //               kPrimaryLightColor,
-                //               kSecondColor,
-                //             ],
-                //             stops: [0, 0.55],
-                //           )),
-                //           child: !_controller.isLoggedIn()
-                //               ? null
-                //               : Column(
-                //                   mainAxisAlignment: MainAxisAlignment.center,
-                //                   crossAxisAlignment: CrossAxisAlignment.center,
-                //                   children: [
-                //                     Container(
-                //                         decoration: const BoxDecoration(
-                //                             color: Colors.grey, shape: BoxShape.circle),
-                //                         child: const Icon(
-                //                           Icons.person,
-                //                           color: Colors.white,
-                //                           size: 50,
-                //                         )),
-                //                     Text(
-                //                       _controller.user!.name!,
-                //                       style: const TextStyle(fontSize: 28, color: Colors.white),
-                //                     ),
-                //                     Text(_controller.user!.email!,
-                //                         style: const TextStyle(fontSize: 18, color: Colors.white)),
-                //                   ],
-                //                 ),
-                //         ),
-                //         !_controller.isLoggedIn()
-                //             ? Container()
-                //             : SizedBox(
-                //                 width: double.infinity,
-                //                 height: MediaQuery.of(context).size.height * 0.1,
-                //                 child: TextButton.icon(
-                //                     onPressed: () async {
-                //                       _controller.logout().then((_) {
-                //                         _getUserLocation();
-                //                         _getUser();
-                //                         setState(() {});
-                //                         Navigator.of(context).pop();
-                //                       });
-                //                     },
-                //                     icon: const Icon(Icons.logout),
-                //                     label: const Text(
-                //                       "Sair",
-                //                       style: TextStyle(fontSize: 18),
-                //                     )),
-                //               )
-                //       ],
-                //     ),
-                //   ),
-                //   appBar: AppBar(
-                //     backgroundColor: Colors.transparent,
-                //     foregroundColor: Colors.black,
-                //     shadowColor: Colors.transparent,
-                //   ),
-                //   backgroundColor: Colors.transparent,
-                //   floatingActionButton: _getFloatingButton(context),
-                // ),
-                Positioned(
-                  bottom: 10,
-                  right: 10,
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      setState(() {
-                        mapController.move(userLocation!, 17);
-                      });
-                    },
-                    backgroundColor: kPrimaryLightColor,
-                    child: const Icon(Icons.share_location, color: kThirdColor),
                   ),
-                ),
-                _receiveCall(context),
-              ],
-            );
-          }
-        },
+                  Positioned(
+                    top: 30,
+                    left: 10,
+                    child: IconButton(
+                        onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+                        icon: const Icon(Icons.menu)),
+                  ),
+                  _receiveCall(context),
+                ],
+              );
+            }
+          },
+        ),
       ),
     );
   }
