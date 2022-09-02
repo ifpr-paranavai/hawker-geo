@@ -80,15 +80,26 @@ class HomeWidget extends State<HomePage> {
   }
 
   Widget _getFloatingButton(BuildContext context) {
+    var locationButton = FloatingActionButton(
+      onPressed: () {
+        setState(() {
+          mapController.move(userLocation!, 17);
+        });
+      },
+      backgroundColor: kPrimaryLightColor,
+      child: const Icon(Icons.share_location, color: kThirdColor),
+    );
     if (_controller.isLoggedIn()) {
       RoleEnum? role = _controller.getUserRole();
 
       if (role == RoleEnum.ROLE_HAWKER) {
         return _floatingSwitchButton(context);
       } else if (role == RoleEnum.ROLE_CUSTOMER) {
-        return _floatingCallButton();
+        // return _floatingCallButton();
+        return locationButton;
       }
     }
+    return locationButton;
     return _floatingLoginButton(context);
   }
 
@@ -228,15 +239,7 @@ class HomeWidget extends State<HomePage> {
                   Positioned(
                     bottom: 10,
                     right: 10,
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        setState(() {
-                          mapController.move(userLocation!, 17);
-                        });
-                      },
-                      backgroundColor: kPrimaryLightColor,
-                      child: const Icon(Icons.share_location, color: kThirdColor),
-                    ),
+                    child: _getFloatingButton(context),
                   ),
                   Positioned(
                     top: 30,
