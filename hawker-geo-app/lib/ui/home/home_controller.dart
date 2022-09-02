@@ -218,4 +218,16 @@ class HomeController {
 
     return closestIceman;
   }
+
+  Future<User> callHawker(BuildContext context, User hawker, LatLng userLocation) async {
+    var now = DateTime.now();
+    _callRepo.saveOrUpdate(Call(
+        active: true,
+        caller: User(),
+        receiver: hawker,
+        startTime: now,
+        endTime: now.add(const Duration(minutes: CALL_TIMER)),
+        status: StatusEnum.A));
+    return hawker;
+  }
 }

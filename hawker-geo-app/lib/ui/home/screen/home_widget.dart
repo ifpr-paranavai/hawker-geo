@@ -16,6 +16,7 @@ import 'package:hawker_geo/ui/home/screen/components/hawker_details_widget.dart'
 import 'package:hawker_geo/ui/home/screen/components/home_drawer_widget.dart';
 import 'package:hawker_geo/ui/shared/floating_switch_widget.dart';
 import 'package:hawker_geo/ui/shared/loading_widget.dart';
+import 'package:hawker_geo/ui/shared/shared_pop_ups.dart';
 import 'package:hawker_geo/ui/styles/color.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -57,6 +58,31 @@ class HomeWidget extends State<HomePage> {
     FirebaseFirestore.instance.collection(CallRepo.REPO_NAME).snapshots().listen((event) {
       setState(() {
         callsDocs = event.docs;
+        var calls = _controller.docsToCallsList(callsDocs);
+        // Widget widget = Container();
+        for (var call in calls) {
+          if (_controller.user != null && call.receiver!.email == _controller.user!.email) {
+            if (call.endTime!.isAfter(DateTime.now()) && call.status != StatusEnum.I) {
+              debugPrint("Encontrou receiver ${call.receiver.email}");
+              SharedPopUps().genericPopUp(context,
+                  title: "Chamado!!",
+                  description: "Você recebeu um chamado!",
+                  acceptButtonText: "OK",
+                  acceptButtonOnPressed: () => Navigator.of(context).pop());
+              // FlutterRingtonePlayer.play(
+              //   android: AndroidSounds.alarm,
+              //   // android: AndroidSounds.ringtone,
+              //   ios: IosSounds.glass,
+              //   looping: true,
+              //   // Android only - API >= 28
+              //   volume: 1,
+              //   // Android only - API >= 28
+              //   asAlarm: false, // Android only - all APIs
+              // );
+              break;
+            }
+          }
+        }
       });
     });
   }
@@ -95,7 +121,7 @@ class HomeWidget extends State<HomePage> {
       if (role == RoleEnum.ROLE_HAWKER) {
         return _floatingSwitchButton(context);
       } else if (role == RoleEnum.ROLE_CUSTOMER) {
-        // return _floatingCallButton();
+        return _floatingCallButton();
         return locationButton;
       }
     }
@@ -248,7 +274,7 @@ class HomeWidget extends State<HomePage> {
                         onPressed: () => _scaffoldKey.currentState?.openDrawer(),
                         icon: const Icon(Icons.menu)),
                   ),
-                  _receiveCall(context),
+                  // _receiveCall(context),
                 ],
               );
             }
@@ -258,28 +284,18 @@ class HomeWidget extends State<HomePage> {
     );
   }
 
-  Widget _receiveCall(BuildContext context) {
+  _receiveCall(BuildContext context) {
     var calls = _controller.docsToCallsList(callsDocs);
-    Widget widget = Container();
+    // Widget widget = Container();
     for (var call in calls) {
       if (_controller.user != null && call.receiver!.email == _controller.user!.email) {
         if (call.endTime!.isAfter(DateTime.now()) && call.status != StatusEnum.I) {
           debugPrint("Encontrou receiver ${call.receiver.email}");
-          widget = Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {},
-                child: Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.8),
-                        border: Border.all(width: 5, color: kPrimaryLightColor),
-                        borderRadius: BorderRadius.circular(500)),
-                    child:
-                        util.gradientIcon(400, Icons.campaign, startGradient: 0, endGradient: 0.5),
-                  ),
-                ),
-              ));
+          SharedPopUps().genericPopUp(context,
+              title: "Chamado!!",
+              description: "Você recebeu um chamado!",
+              acceptButtonText: "OK",
+              acceptButtonOnPressed: () => Navigator.of(context).pop());
           // FlutterRingtonePlayer.play(
           //   android: AndroidSounds.alarm,
           //   // android: AndroidSounds.ringtone,
@@ -294,7 +310,7 @@ class HomeWidget extends State<HomePage> {
         }
       }
     }
-    return widget;
+    // return widget;
   }
 
   List<Marker> _getMarkers(List<User> hawkers) {
@@ -360,6 +376,7 @@ class HomeWidget extends State<HomePage> {
       builder: (context) {
         return HawkerDetailsWidget(
           hawker: hawker,
+          callButtonOnPressed: () => _controller.callHawker(context, hawker, userLocation!),
         );
       },
     );

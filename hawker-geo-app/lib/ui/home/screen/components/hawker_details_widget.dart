@@ -18,8 +18,9 @@ import 'package:hawker_geo/ui/styles/text.dart';
 
 class HawkerDetailsWidget extends StatelessWidget {
   final User hawker;
+  final VoidCallback? callButtonOnPressed;
 
-  const HawkerDetailsWidget({Key? key, required this.hawker}) : super(key: key);
+  const HawkerDetailsWidget({Key? key, required this.hawker, this.callButtonOnPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +73,7 @@ class HawkerDetailsWidget extends StatelessWidget {
                               )),
                           Text(hawker.name!, style: boldTitle),
                           IconButton(
-                              onPressed: () {},
+                              onPressed: callButtonOnPressed,
                               icon: const GradientIcon(
                                 icon: Icons.campaign,
                                 rectSize: 26,
