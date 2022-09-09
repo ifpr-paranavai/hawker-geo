@@ -126,7 +126,7 @@ class HawkerDetailsWidget extends StatelessWidget {
                           itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
                           itemBuilder: (context, _) => const Icon(
                             Icons.star,
-                            color: kFourthColor,
+                            color: kFourthLightColor,
                           ),
                           onRatingUpdate: (rating) => 0,
                         )

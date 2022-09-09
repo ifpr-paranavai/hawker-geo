@@ -16,7 +16,7 @@ class GradientIcon extends StatelessWidget {
     required this.rectSize,
     this.startGradient = 0,
     this.endGradient = 0.55,
-    this.gradientColors = const [kPrimaryLightColor, kSecondColor],
+    this.gradientColors = const [kPrimaryLightColor, kSecondLightColor],
   }) : super(key: key);
 
   @override

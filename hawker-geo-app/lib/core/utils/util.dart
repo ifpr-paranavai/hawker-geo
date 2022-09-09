@@ -35,7 +35,7 @@ class Util {
           end: Alignment.bottomRight,
           colors: const [
             kPrimaryLightColor,
-            kSecondColor,
+            kSecondLightColor,
           ],
           stops: [startGradient, endGradient],
         ).createShader(rect);

@@ -23,10 +23,10 @@ class AppWidget extends State<AppWidgetPage> {
   Widget build(BuildContext context) {
     theme = theme.copyWith(
       colorScheme: theme.colorScheme.copyWith(
-        onSecondary: kFourthColor,
+        onSecondary: kFourthLightColor,
         onPrimary: const Color(0xffffffff),
         primary: Colors.lightGreen,
-        secondary: kSecondColor,
+        secondary: kSecondLightColor,
       ),
     );
     return MaterialApp(

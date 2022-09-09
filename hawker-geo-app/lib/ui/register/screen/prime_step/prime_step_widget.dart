@@ -20,6 +20,9 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
 
   var _passwordVisible = false;
 
+  var _blobGradient = [kPrimaryDarkColor, kPrimaryLightColor];
+  var _itensGradient = [kPrimaryLightColor, kPrimaryMediumColor];
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -38,9 +41,8 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
                   id: const ['16-5-674332'],
                   size: 400,
                   styles: BlobStyles(
-                      gradient:
-                          const LinearGradient(colors: [kPrimaryDarkColor, kPrimaryLightColor])
-                              .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
+                      gradient: LinearGradient(colors: _blobGradient)
+                          .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
                 ),
               ),
               Positioned(
@@ -50,9 +52,8 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
                   id: const ['16-5-95'],
                   size: 400,
                   styles: BlobStyles(
-                      gradient:
-                          const LinearGradient(colors: [kPrimaryLightColor, kPrimaryDarkColor])
-                              .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
+                      gradient: LinearGradient(colors: _blobGradient)
+                          .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
                 ),
               ),
               Positioned(
@@ -62,9 +63,8 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
                   id: const ['13-2-43'],
                   size: 400,
                   styles: BlobStyles(
-                      gradient:
-                          const LinearGradient(colors: [kPrimaryLightColor, kPrimaryDarkColor])
-                              .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
+                      gradient: LinearGradient(colors: _blobGradient)
+                          .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
                 ),
               ),
               ListView(children: [
@@ -78,12 +78,14 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
                 RegisterTextField(
                     hintText: "Nome",
                     icon: Icons.person,
+                    iconGradient: _itensGradient,
                     onChanged: (value) {
                       _controller.user.name = value;
                     }),
                 RegisterTextField(
                     hintText: "E-mail",
                     icon: Icons.email,
+                    iconGradient: _itensGradient,
                     keyboardType: TextInputType.emailAddress,
                     onChanged: (value) {
                       _controller.user.email = value;
@@ -91,6 +93,7 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
                 RegisterTextField(
                   hintText: "Senha",
                   icon: Icons.lock,
+                  iconGradient: _itensGradient,
                   obscureText: !_passwordVisible,
                   onChanged: (value) {
                     _controller.user.password = value;
@@ -111,8 +114,10 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
                     ),
                   ),
                 ),
+                _getSwitchButton(),
                 DefaultNextButton(
                   "CRIAR CONTA",
+                  buttonColors: _blobGradient.reversed.toList(),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       FunctionWidgets().showLoading(context);
@@ -126,5 +131,18 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
         ),
       ),
     );
+  }
+
+  _getSwitchButton() {
+    return Switch(
+        value: true,
+        onChanged: (value) {
+          setState(() {
+            _blobGradient = [
+              kFourthLightColor,
+              kFourthDarkColor,
+            ];
+          });
+        });
   }
 }

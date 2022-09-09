@@ -40,7 +40,7 @@ class HomeDrawerWidget extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                kFourthColor,
+                kFourthLightColor,
                 kThirdColor,
               ],
               stops: [0, 0.55],

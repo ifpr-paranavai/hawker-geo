@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hawker_geo/ui/shared/gradient_icon.dart';
+import 'package:hawker_geo/ui/styles/color.dart';
 
 class RegisterTextField extends StatelessWidget {
   final Color shadowColor;
   final String? hintText;
   final IconData? icon;
+  final List<Color> iconGradient;
   final Widget? suffixIcon;
   final bool obscureText;
   final ValueChanged<String>? onChanged;
@@ -19,6 +21,7 @@ class RegisterTextField extends StatelessWidget {
     this.shadowColor = Colors.lightGreen,
     this.hintText,
     this.icon,
+    this.iconGradient = const [kPrimaryLightColor, kPrimaryMediumColor],
     this.suffixIcon,
     this.controller,
     this.validator,
@@ -56,10 +59,7 @@ class RegisterTextField extends StatelessWidget {
                         child: GradientIcon(
                           rectSize: 30,
                           icon: icon!,
-                          gradientColors: const [
-                            Colors.lightGreen,
-                            Color.fromARGB(255, 42, 159, 45)
-                          ],
+                          gradientColors: iconGradient,
                         ),
                       )
                     : null,

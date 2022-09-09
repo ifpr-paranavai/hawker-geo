@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 const kPrimaryLightColor = Colors.lightGreen;
+const kPrimaryMediumColor = Color.fromARGB(255, 42, 159, 45);
 const kPrimaryDarkColor = Color.fromARGB(255, 60, 137, 109);
-const kSecondColor = Color.fromARGB(255, 237, 106, 90);
+const kSecondLightColor = Color.fromARGB(255, 237, 106, 90);
+const kSecondDarkColor = Color.fromARGB(255, 236, 78, 38);
 const kThirdColor = Color.fromARGB(255, 188, 239, 253);
-const kFourthColor = Color.fromARGB(255, 255, 249, 79);
+const kFourthLightColor = Color.fromARGB(255, 251, 220, 64);
+const kFourthDarkColor = Color.fromARGB(255, 248, 136, 45);
 const kFifthColor = Color.fromARGB(255, 2, 2, 2);
 const textIcons = Color.fromARGB(255, 255, 255, 255);
 const accentColor = Color.fromARGB(255, 0, 188, 212);
