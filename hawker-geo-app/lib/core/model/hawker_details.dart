@@ -8,33 +8,49 @@
 import 'package:hawker_geo/core/model/hawker_category_enum.dart';
 
 class HawkerDetails {
-  static const String CATEGORY = "category";
-  static const String RATING_VALUE = "ratingValue";
+  static const String CATEGORIES = "categories";
+  static const String AVERAGE_RATING = "averageRating";
+  static const String CPF = "cpf";
+  static const String COMPANY_NAME = "companyName";
   static const String DESCRIPTION = "description";
   static const String PRODUCT_PHOTOS = "productPhotos";
 
-  HawkerCategoryEnum? category;
-  double? ratingValue;
+  List<HawkerCategoryEnum>? categories;
+  double? averageRating;
+  String? cpf;
+  String? companyName;
   String? description;
-  List<String>? productPhotos;
+  List<String>? additionalPhotos;
 
-  HawkerDetails({this.category, this.ratingValue, this.description, this.productPhotos});
+  HawkerDetails(
+      {this.categories,
+      this.averageRating,
+      this.description,
+      this.additionalPhotos,
+      this.cpf,
+      this.companyName});
 
   static HawkerDetails fromJson(Map<String, dynamic> json) => HawkerDetails(
-        category: json[CATEGORY] != null
-            ? HawkerCategoryEnum.values.where((a) => a.value == json[CATEGORY]).first
+        categories: json[CATEGORIES] != null
+            ? (json[CATEGORIES]
+                .map((e) => HawkerCategoryEnum.values.where((a) => a.value == e).first)).toList()
             : null,
-        ratingValue: json[RATING_VALUE] as double?,
+        averageRating: json[AVERAGE_RATING] as double?,
+        cpf: json[CPF] as String?,
+        companyName: json[COMPANY_NAME] as String?,
         description: json[DESCRIPTION] as String?,
-        productPhotos: json[PRODUCT_PHOTOS] as List<String>?,
+        additionalPhotos: json[PRODUCT_PHOTOS] as List<String>?,
       );
 
   Map<String, dynamic> toJson() {
     return {
-      CATEGORY: category != null ? category!.value.toString() : category,
-      RATING_VALUE: ratingValue,
-      DESCRIPTION: description,
-      PRODUCT_PHOTOS: productPhotos,
+      CATEGORIES:
+          categories != null ? categories!.map((i) => i.value.toString()).toList() : categories,
+      AVERAGE_RATING: averageRating,
+      CPF: cpf,
+      DESCRIPTION: companyName,
+      COMPANY_NAME: description,
+      PRODUCT_PHOTOS: additionalPhotos,
     };
   }
 }

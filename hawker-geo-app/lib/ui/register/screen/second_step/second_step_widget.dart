@@ -119,7 +119,7 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
                   ),
                   RegisterTextField(
                       hintText: "Celular",
-                      icon: Icons.email,
+                      icon: Icons.phone,
                       keyboardType: TextInputType.phone,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,

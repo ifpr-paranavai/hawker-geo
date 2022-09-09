@@ -351,9 +351,9 @@ class HomeWidget extends State<HomePage> {
                         borderRadius: BorderRadius.circular(100),
                         onTap: () => _showHawkerDetails(context, hawker),
                         child: Image.asset(
-                          hawker.hawkerDetails?.category != null
-                              ? HawkerCategoryEnumExtension.categoryIcon(
-                                  hawker.hawkerDetails!.category!)
+                          hawker.hawkerDetails?.categories != null
+                              ? HawkerCategoryEnumExtension.categoryIcon(hawker.hawkerDetails!
+                                  .categories!.first) // TODO - está pegando first da category
                               : AppImages.categoryBread,
                         ),
                       ),

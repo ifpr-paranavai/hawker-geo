@@ -20,7 +20,8 @@ class HawkerDetailsWidget extends StatelessWidget {
   final User hawker;
   final VoidCallback? callButtonOnPressed;
 
-  const HawkerDetailsWidget({Key? key, required this.hawker, this.callButtonOnPressed}) : super(key: key);
+  const HawkerDetailsWidget({Key? key, required this.hawker, this.callButtonOnPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -90,15 +91,16 @@ class HawkerDetailsWidget extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "Categoria: ${HawkerCategoryEnumExtension.getEnumName(hawker.hawkerDetails!.category!)}",
+                          "Categoria: ${HawkerCategoryEnumExtension.getEnumName(hawker.hawkerDetails!.categories!.first)}",
+                          // TODO - está pegando first da category
                           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 6),
                           child: Image.asset(
-                            hawker.hawkerDetails!.category != null
-                                ? HawkerCategoryEnumExtension.categoryIcon(
-                                    hawker.hawkerDetails!.category!)
+                            hawker.hawkerDetails!.categories != null
+                                ? HawkerCategoryEnumExtension.categoryIcon(hawker.hawkerDetails!
+                                    .categories!.first) // TODO - está pegando first da category
                                 : AppImages.categoryBread,
                             height: 30,
                             width: 30,
@@ -114,7 +116,7 @@ class HawkerDetailsWidget extends StatelessWidget {
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                         ),
                         RatingBar.builder(
-                          initialRating: hawker.hawkerDetails?.ratingValue ?? 4,
+                          initialRating: hawker.hawkerDetails?.averageRating ?? 4,
                           ignoreGestures: true,
                           minRating: 1,
                           itemSize: 25,
