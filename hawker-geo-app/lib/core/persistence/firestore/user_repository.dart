@@ -70,7 +70,7 @@ class UserRepository {
           email: doc[User.EMAIL],
           phoneNumber: doc[User.PHONE_NUMBER],
           role: RoleEnumEnumExtension.fromRaw(doc[User.ROLE]),
-          hawkerDetails: HawkerDetails.fromJson(doc[User.HAWKER_DETAILS]));
+          hawkerDetails: doc[User.HAWKER_DETAILS] != null ? HawkerDetails.fromJson(doc[User.HAWKER_DETAILS]) : null);
     } else {
       return null;
     }
