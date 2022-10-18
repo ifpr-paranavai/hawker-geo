@@ -6,6 +6,8 @@
 
 import 'package:blobs/blobs.dart';
 import 'package:flutter/material.dart';
+import 'package:hawker_geo/core/model/role_enum.dart';
+import 'package:hawker_geo/core/utils/app_images.dart';
 import 'package:hawker_geo/ui/register/register_controller.dart';
 import 'package:hawker_geo/ui/register/screen/components/register_text_field.dart';
 import 'package:hawker_geo/ui/shared/default_next_button.dart';
@@ -21,7 +23,8 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
   var _passwordVisible = false;
 
   var _blobGradient = [kPrimaryDarkColor, kPrimaryLightColor];
-  var _itensGradient = [kPrimaryLightColor, kPrimaryMediumColor];
+  var _itemsGradient = [kPrimaryLightColor, kPrimaryMediumColor];
+  var _isCustomer = true;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -78,14 +81,14 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
                 RegisterTextField(
                     hintText: "Nome",
                     icon: Icons.person,
-                    iconGradient: _itensGradient,
+                    iconGradient: _itemsGradient,
                     onChanged: (value) {
                       _controller.user.name = value;
                     }),
                 RegisterTextField(
                     hintText: "E-mail",
                     icon: Icons.email,
-                    iconGradient: _itensGradient,
+                    iconGradient: _itemsGradient,
                     keyboardType: TextInputType.emailAddress,
                     onChanged: (value) {
                       _controller.user.email = value;
@@ -93,7 +96,7 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
                 RegisterTextField(
                   hintText: "Senha",
                   icon: Icons.lock,
-                  iconGradient: _itensGradient,
+                  iconGradient: _itemsGradient,
                   obscureText: !_passwordVisible,
                   onChanged: (value) {
                     _controller.user.password = value;
@@ -114,13 +117,14 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
                     ),
                   ),
                 ),
-                _getSwitchButton(),
+                _switchButton(),
                 DefaultNextButton(
                   "CRIAR CONTA",
                   buttonColors: _blobGradient.reversed.toList(),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       FunctionWidgets().showLoading(context);
+                      _controller.user.role ??= RoleEnum.ROLE_CUSTOMER;
                       _controller.registerUser(context);
                     }
                   },
@@ -133,16 +137,46 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
     );
   }
 
-  _getSwitchButton() {
-    return Switch(
-        value: true,
-        onChanged: (value) {
-          setState(() {
-            _blobGradient = [
-              kFourthLightColor,
-              kFourthDarkColor,
-            ];
-          });
-        });
+  _switchButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Cliente",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: _isCustomer ? Colors.black : kDisabledColor)),
+        Icon(Icons.person, color: _isCustomer ? kPrimaryLightColor : kDisabledColor),
+        Switch(
+            activeColor: kFourthDarkColor,
+            inactiveThumbColor: kPrimaryDarkColor.withOpacity(0.8),
+            inactiveTrackColor: kPrimaryLightColor,
+            value: !_isCustomer,
+            onChanged: (value) {
+              setState(() {
+                if (_isCustomer) {
+                  _controller.user.role = RoleEnum.ROLE_CUSTOMER;
+                  _blobGradient = _itemsGradient = [
+                    kFourthLightColor,
+                    kFourthDarkColor,
+                  ];
+                } else {
+                  _controller.user.role = RoleEnum.ROLE_HAWKER;
+                  _blobGradient = _itemsGradient = [kPrimaryDarkColor, kPrimaryLightColor];
+                }
+              });
+              _isCustomer = !_isCustomer;
+            }),
+        ImageIcon(
+          AssetImage(AppImages.hawkerKart),
+          color: !_isCustomer ? kFourthDarkColor.withOpacity(0.8) : kDisabledColor,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 2.0),
+          child: Text("Vendedor",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: !_isCustomer ? Colors.black : kDisabledColor)),
+        ),
+      ],
+    );
   }
 }

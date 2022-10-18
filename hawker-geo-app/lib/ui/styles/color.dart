@@ -17,3 +17,4 @@ const dividerColor = Color.fromARGB(255, 189, 189, 189);
 
 const kTextColor = Color.fromARGB(255, 25, 25, 25);
 const kSecondaryTextColor = Color.fromARGB(255, 115, 115, 115);
+const kDisabledColor = Color.fromARGB(255, 115, 115, 115);
