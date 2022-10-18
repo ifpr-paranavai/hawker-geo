@@ -12,7 +12,7 @@ class CustomRouter {
     );
   }
 
-  static Future pushAndEmpityPile(BuildContext context, Widget page) {
+  static Future pushAndEmptyPile(BuildContext context, Widget page) {
     return Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(

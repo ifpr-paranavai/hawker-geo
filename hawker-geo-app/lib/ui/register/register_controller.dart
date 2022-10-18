@@ -45,7 +45,7 @@ class RegisterController {
 
       await _service.registerObjUser(user).then((_) {
         Navigator.of(context).pop(); // fechar loading
-        CustomRouter.pushAndEmpityPile(context, const HomePage());
+        CustomRouter.pushAndEmptyPile(context, const HomePage());
       });
     } on fb.FirebaseAuthException catch (e) {
       Navigator.of(context).pop();
