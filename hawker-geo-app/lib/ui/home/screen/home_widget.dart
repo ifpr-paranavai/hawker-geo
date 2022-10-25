@@ -265,7 +265,7 @@ class HomeWidget extends State<HomePage> {
                   Positioned(
                     bottom: 10,
                     right: 10,
-                    child: _getFloatingButton(context),
+                    child: _getFloatingButton(context), // TODO - floating button
                   ),
                   Positioned(
                     top: 30,

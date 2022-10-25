@@ -6,9 +6,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hawker_geo/core/model/gender_enum.dart';
+import 'package:hawker_geo/core/model/hawker_details.dart';
+import 'package:hawker_geo/core/model/role_enum.dart';
 import 'package:hawker_geo/ui/register/register_controller.dart';
 import 'package:hawker_geo/ui/register/screen/components/register_dropdown_button.dart';
 import 'package:hawker_geo/ui/register/screen/components/register_text_field.dart';
@@ -34,10 +37,22 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
   File? _imageFile;
   String? imageBase64;
 
+  var _blobGradient = [kPrimaryLightColor, kPrimaryDarkColor];
+  var _itemsGradient = [kPrimaryLightColor, kPrimaryMediumColor];
+
   @override
   void initState() {
     _controller.user = widget.user;
     _controller.user.gender = GenderEnum.values.first;
+
+    if (_controller.user.role == RoleEnum.ROLE_HAWKER) {
+      _controller.user.hawkerDetails ??= HawkerDetails();
+      _blobGradient = _itemsGradient = [
+        kFourthLightColor,
+        kFourthDarkColor,
+      ];
+    }
+
     super.initState();
   }
 
@@ -67,7 +82,7 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
         return Future.value(canPop);
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         body: SafeArea(
           child: Form(
             key: _formKey,
@@ -80,9 +95,8 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
                     id: const ['18-4-2319'],
                     size: 400,
                     styles: BlobStyles(
-                        gradient:
-                            const LinearGradient(colors: [kPrimaryLightColor, kPrimaryDarkColor])
-                                .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
+                        gradient: LinearGradient(colors: _blobGradient)
+                            .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
                   ),
                 ),
                 Positioned(
@@ -92,9 +106,8 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
                     id: const ['8-3-26'],
                     size: 400,
                     styles: BlobStyles(
-                        gradient:
-                            const LinearGradient(colors: [kPrimaryLightColor, kPrimaryDarkColor])
-                                .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
+                        gradient: LinearGradient(colors: _blobGradient)
+                            .createShader(const Rect.fromLTRB(0, 0, 300, 300))),
                   ),
                 ),
                 ListView(children: [
@@ -102,6 +115,7 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
                     height: 50,
                   ),
                   EditPhotoWidget(
+                    color: _itemsGradient.first,
                     image: _image,
                     onPressed: () => _showModalBottomSheet(context),
                   ),
@@ -112,6 +126,7 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
                   RegisterTextField(
                     hintText: "Apelido",
                     icon: Icons.person,
+                    iconGradient: _itemsGradient,
                     onChanged: (value) {
                       _controller.user.username = value;
                     },
@@ -120,6 +135,7 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
                   RegisterTextField(
                       hintText: "Celular",
                       icon: Icons.phone,
+                      iconGradient: _itemsGradient,
                       keyboardType: TextInputType.phone,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
@@ -132,15 +148,59 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
                         _controller.user.phoneNumber = number;
                       }),
                   _genderDropdown(),
+                  if (_controller.user.role == RoleEnum.ROLE_HAWKER) ...[
+                    RegisterTextField(
+                      hintText: "Nome do negócio",
+                      icon: Icons.add_business,
+                      iconGradient: _itemsGradient,
+                      onChanged: (value) {
+                        _controller.user.hawkerDetails?.companyName = value;
+                      },
+                      validator: (value) => _validators.emptyValidator(value),
+                    ),
+                    RegisterTextField(
+                        hintText: "CPF",
+                        icon: Icons.pin,
+                        iconGradient: _itemsGradient,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          CpfInputFormatter()
+                        ],
+                        validator: (value) {
+                          if (CPFValidator.isValid(value)) {
+                            return null;
+                          } else {
+                            return "CPF inválido";
+                          }
+                        },
+                        onChanged: (value) {
+                          var number = value.replaceAll(" ", "");
+                          number = number.replaceAll(RegExp(r'[^0-9]'), "");
+                          _controller.user.hawkerDetails?.cpf = number;
+                        }),
+                    RegisterTextField(
+                      hintText: "Descrição",
+                      icon: Icons.article_outlined,
+                      iconGradient: _itemsGradient,
+                      keyboardType: TextInputType.multiline,
+                      onChanged: (value) {
+                        _controller.user.hawkerDetails?.description = value;
+                      },
+                      validator: (value) => _validators.emptyValidator(value),
+                    ),
+                  ],
                   DefaultNextButton(
                     "FINALIZAR",
+                    buttonColors: _blobGradient.reversed.toList(),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         FunctionWidgets().showLoading(context);
                         _controller.registerObjUser(context);
                       }
                     },
-                  )
+                  ),
+                  const SizedBox(height: 100,)
                 ]),
               ],
             ),
@@ -159,9 +219,10 @@ class RegisterSecondStepWidget extends State<RegisterSecondStepPage> {
           child: Row(
             children: [
               GradientIcon(
-                  icon: GenderEnumExtension.genderIcon(value),
-                  rectSize: 30,
-                  gradientColors: const [Colors.lightGreen, Color.fromARGB(255, 42, 159, 45)]),
+                icon: GenderEnumExtension.genderIcon(value),
+                rectSize: 30,
+                gradientColors: _itemsGradient,
+              ),
               const SizedBox(width: 10),
               Text(GenderEnumExtension.getEnumName(value)),
             ],

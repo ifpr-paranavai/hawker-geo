@@ -153,13 +153,13 @@ class RegisterPrimeStepWidget extends State<RegisterPrimeStepPage> {
             onChanged: (value) {
               setState(() {
                 if (_isCustomer) {
-                  _controller.user.role = RoleEnum.ROLE_CUSTOMER;
+                  _controller.user.role = RoleEnum.ROLE_HAWKER;
                   _blobGradient = _itemsGradient = [
                     kFourthLightColor,
                     kFourthDarkColor,
                   ];
                 } else {
-                  _controller.user.role = RoleEnum.ROLE_HAWKER;
+                  _controller.user.role = RoleEnum.ROLE_CUSTOMER;
                   _blobGradient = _itemsGradient = [kPrimaryDarkColor, kPrimaryLightColor];
                 }
               });

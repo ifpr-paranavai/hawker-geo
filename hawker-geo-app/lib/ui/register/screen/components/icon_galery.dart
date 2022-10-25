@@ -12,6 +12,7 @@ class IconGallery extends StatelessWidget {
   final Size? buttonSize;
   final double? iconSize;
   final Color borderColor;
+  final Color iconColor;
   final double borderWidth;
   final EdgeInsetsGeometry? padding;
 
@@ -23,6 +24,7 @@ class IconGallery extends StatelessWidget {
     this.buttonSize = const Size(200, 200),
     this.iconSize,
     this.borderColor = kPrimaryLightColor,
+    this.iconColor = kPrimaryLightColor,
     this.image,
     this.borderWidth = 5,
     this.padding,
@@ -41,7 +43,7 @@ class IconGallery extends StatelessWidget {
           onLongPress: null,
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.zero,
-            primary: disabled ? Colors.black45 : kPrimaryLightColor,
+            primary: disabled ? Colors.black45 : iconColor,
             shape: const CircleBorder(),
             fixedSize: buttonSize,
             elevation: 0,
@@ -55,7 +57,7 @@ class IconGallery extends StatelessWidget {
       return Icon(
         IconData(icon!, fontFamily: "MaterialIcons"),
         color: textIcons,
-        size: iconSize!,
+        size: iconSize!
       );
     } else if (image is Uint8List) {
       return Container(

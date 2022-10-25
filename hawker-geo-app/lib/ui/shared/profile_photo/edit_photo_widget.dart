@@ -10,11 +10,11 @@ import 'package:hawker_geo/ui/styles/color.dart';
 
 class EditPhotoWidget extends StatelessWidget {
   final dynamic image;
-  final Color borderColor;
+  final Color color;
   final VoidCallback? onPressed;
 
   const EditPhotoWidget(
-      {Key? key, required this.image, this.borderColor = kPrimaryLightColor, this.onPressed})
+      {Key? key, required this.image, this.color = kPrimaryLightColor, this.onPressed})
       : super(key: key);
 
   @override
@@ -23,7 +23,8 @@ class EditPhotoWidget extends StatelessWidget {
       Align(
         alignment: Alignment.center,
         child: IconGallery(
-          borderColor: kPrimaryLightColor,
+          borderColor: color,
+          iconColor: color,
           borderWidth: 3,
           padding: const EdgeInsets.all(6),
           disabled: false,
@@ -42,7 +43,7 @@ class EditPhotoWidget extends StatelessWidget {
           child: ElevatedButton(
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
-              primary: kPrimaryLightColor,
+              primary: color,
               shape: const CircleBorder(),
             ),
             child: const Icon(
