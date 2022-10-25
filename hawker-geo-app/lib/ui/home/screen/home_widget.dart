@@ -112,8 +112,8 @@ class HomeWidget extends State<HomePage> {
           mapController.move(userLocation!, 17);
         });
       },
-      backgroundColor: kPrimaryLightColor,
-      child: const Icon(Icons.share_location, color: kThirdColor),
+      backgroundColor: kPrimaryLightColor.withOpacity(0.8),
+      child: Icon(Icons.my_location_sharp, color: Colors.red.withOpacity(0.8)),
     );
     if (_controller.isLoggedIn()) {
       RoleEnum? role = _controller.getUserRole();
@@ -122,11 +122,9 @@ class HomeWidget extends State<HomePage> {
         return _floatingSwitchButton(context);
       } else if (role == RoleEnum.ROLE_CUSTOMER) {
         return _floatingCallButton();
-        return locationButton;
       }
     }
     return locationButton;
-    return _floatingLoginButton(context);
   }
 
   Widget _floatingCallButton() {
@@ -265,7 +263,7 @@ class HomeWidget extends State<HomePage> {
                   Positioned(
                     bottom: 10,
                     right: 10,
-                    child: _getFloatingButton(context), // TODO - floating button
+                    child: _getFloatingButton(context),
                   ),
                   Positioned(
                     top: 30,
