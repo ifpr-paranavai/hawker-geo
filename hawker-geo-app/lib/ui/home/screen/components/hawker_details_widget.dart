@@ -131,7 +131,15 @@ class HawkerDetailsWidget extends StatelessWidget {
                           onRatingUpdate: (rating) => 0,
                         )
                       ],
-                    )
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      "Sobre mim",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                    Text(hawker.hawkerDetails!.description!)
                   ],
                 ),
               ),

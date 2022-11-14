@@ -71,7 +71,7 @@ class HomeController {
     await showModalBottomSheet(
       context: context,
       builder: (context) => FractionallySizedBox(
-          heightFactor: 0.85,
+          heightFactor: 0.6,
           child: LoginModal(
             onLogged: (login) {
               tryLogin(context, login);
@@ -124,6 +124,7 @@ class HomeController {
             hawkerDetails: HawkerDetails.fromJson(data[User.HAWKER_DETAILS])));
       }
     });
+    debugPrint("buscou users");
     return users;
   }
 

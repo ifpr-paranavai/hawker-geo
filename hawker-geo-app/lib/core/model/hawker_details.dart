@@ -31,10 +31,7 @@ class HawkerDetails {
       this.companyName});
 
   static HawkerDetails fromJson(Map<String, dynamic> json) => HawkerDetails(
-        categories: json[CATEGORIES] != null
-            ? (json[CATEGORIES]
-                .map((e) => HawkerCategoryEnum.values.where((a) => a.value == e).first)).toList()
-            : null,
+        categories: json[CATEGORIES] != null ? _getUserCategories(json) : null,
         averageRating: json[AVERAGE_RATING] as double?,
         cpf: json[CPF] as String?,
         companyName: json[COMPANY_NAME] as String?,
@@ -42,14 +39,22 @@ class HawkerDetails {
         additionalPhotos: json[PRODUCT_PHOTOS] as List<String>?,
       );
 
+  static _getUserCategories(Map<String, dynamic> json) {
+    List<HawkerCategoryEnum> categories = [];
+    json[CATEGORIES].forEach((category) {
+      categories.add(HawkerCategoryEnum.values.where((a) => a.value == category).first);
+    });
+    return categories;
+  }
+
   Map<String, dynamic> toJson() {
     return {
       CATEGORIES:
           categories != null ? categories!.map((i) => i.value.toString()).toList() : categories,
       AVERAGE_RATING: averageRating,
       CPF: cpf,
-      DESCRIPTION: companyName,
-      COMPANY_NAME: description,
+      COMPANY_NAME: companyName,
+      DESCRIPTION: description,
       PRODUCT_PHOTOS: additionalPhotos,
     };
   }

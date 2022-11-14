@@ -46,7 +46,7 @@ class HomeWidget extends State<HomePage> {
   }
 
   _getUser() async {
-    // util.generateHawker(10);
+    // util.generateHawker(5);
     await _controller.checkUser();
     if (_controller.getUserRole() != null && _controller.getUserRole() == RoleEnum.ROLE_HAWKER) {
       _startFirestoreListener();
@@ -341,9 +341,9 @@ class HomeWidget extends State<HomePage> {
                 builder: (ctx) => AnimatedContainer(
                   duration: const Duration(milliseconds: 500),
                   child: Transform.scale(
-                    scale: 0.5,
+                    scale: 0.6,
                     child: Material(
-                      color: kThirdColor.withOpacity(0.4),
+                      color: kThirdColor.withOpacity(0.2),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
                       child: InkWell(
                         borderRadius: BorderRadius.circular(100),
@@ -353,6 +353,7 @@ class HomeWidget extends State<HomePage> {
                               ? HawkerCategoryEnumExtension.categoryIcon(hawker.hawkerDetails!
                                   .categories!.first) // TODO - está pegando first da category
                               : AppImages.categoryBread,
+                          scale: 0.7,
                         ),
                       ),
                     ),

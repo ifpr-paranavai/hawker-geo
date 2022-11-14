@@ -60,19 +60,19 @@ class _LoginModalState extends State<LoginModal> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          FractionallySizedBox(
-            widthFactor: 0.8,
-            child: OutlinedButton(
-              onPressed: () => CustomRouter.pushPage(context, const RegisterPrimeStepPage()),
-              child: const Text(
-                "Não tenho conta",
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-          ),
+          // const SizedBox(
+          //   height: 20,
+          // ),
+          // FractionallySizedBox(
+          //   widthFactor: 0.8,
+          //   child: OutlinedButton(
+          //     onPressed: () => CustomRouter.pushPage(context, const RegisterPrimeStepPage()),
+          //     child: const Text(
+          //       "Não tenho conta",
+          //       style: TextStyle(fontSize: 18),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
