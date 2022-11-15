@@ -375,7 +375,15 @@ class HomeWidget extends State<HomePage> {
       builder: (context) {
         return HawkerDetailsWidget(
           hawker: hawker,
-          callButtonOnPressed: () => _controller.callHawker(context, hawker, userLocation!),
+          callButtonOnPressed: () => SharedPopUps().genericPopUp(context,
+              title: "Criar chamado",
+              description: "Realmente deseja criar um chamado para esse vendedor?",
+              acceptButtonText: "Sim",
+              cancelButtonText: "Não", acceptButtonOnPressed: () {
+            _controller.callHawker(context, hawker, userLocation!);
+            Fluttertoast.showToast(msg: "Chamando vendedor...");
+            Navigator.of(context).pop();
+          }),
         );
       },
     );
