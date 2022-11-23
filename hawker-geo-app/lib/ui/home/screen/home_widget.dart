@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hawker_geo/core/model/call.dart';
 import 'package:hawker_geo/core/model/hawker_category_enum.dart';
 import 'package:hawker_geo/core/model/role_enum.dart';
 import 'package:hawker_geo/core/model/status_enum.dart';
@@ -13,9 +14,12 @@ import 'package:hawker_geo/core/utils/app_images.dart';
 import 'package:hawker_geo/core/utils/constants.dart';
 import 'package:hawker_geo/core/utils/util.dart';
 import 'package:hawker_geo/ui/home/home_controller.dart';
+import 'package:hawker_geo/ui/home/screen/components/accept_call_widget.dart';
 import 'package:hawker_geo/ui/home/screen/components/hawker_details_widget.dart';
 import 'package:hawker_geo/ui/home/screen/components/home_drawer_widget.dart';
+import 'package:hawker_geo/ui/home/screen/components/review_user_widget.dart';
 import 'package:hawker_geo/ui/shared/floating_switch_widget.dart';
+import 'package:hawker_geo/ui/shared/function_widgets.dart';
 import 'package:hawker_geo/ui/shared/loading_widget.dart';
 import 'package:hawker_geo/ui/shared/shared_pop_ups.dart';
 import 'package:hawker_geo/ui/styles/color.dart';
@@ -59,17 +63,13 @@ class HomeWidget extends State<HomePage> {
     FirebaseFirestore.instance.collection(CallRepo.REPO_NAME).snapshots().listen((event) {
       setState(() {
         callsDocs = event.docs;
-        var calls = _controller.docsToCallsList(callsDocs);
+        List<Call> calls = _controller.docsToCallsList(callsDocs);
         // Widget widget = Container();
         for (var call in calls) {
           if (_controller.user != null && call.receiver!.email == _controller.user!.email) {
             if (call.endTime!.isAfter(DateTime.now()) && call.status != StatusEnum.I) {
-              debugPrint("Encontrou receiver ${call.receiver.email}");
-              SharedPopUps().genericPopUp(context,
-                  title: "Chamado!!",
-                  description: "Você recebeu um chamado!",
-                  acceptButtonText: "OK",
-                  acceptButtonOnPressed: () => Navigator.of(context).pop());
+              debugPrint("Encontrou receiver ${call.receiver?.email}");
+              _acceptCallPopUp(context, call.caller!);
               // FlutterRingtonePlayer.play(
               //   android: AndroidSounds.alarm,
               //   // android: AndroidSounds.ringtone,
@@ -109,7 +109,9 @@ class HomeWidget extends State<HomePage> {
   Widget _getFloatingButton(BuildContext context) {
     var locationButton = FloatingActionButton(
       onPressed: () async {
-        await _ratingPopUp(context);
+        setState(() {
+          mapController.move(userLocation!, 17);
+        });
       },
       backgroundColor: kPrimaryLightColor.withOpacity(0.8),
       child: Icon(Icons.my_location_sharp, color: Colors.red.withOpacity(0.8)),
@@ -281,35 +283,6 @@ class HomeWidget extends State<HomePage> {
     );
   }
 
-  _receiveCall(BuildContext context) {
-    var calls = _controller.docsToCallsList(callsDocs);
-    // Widget widget = Container();
-    for (var call in calls) {
-      if (_controller.user != null && call.receiver!.email == _controller.user!.email) {
-        if (call.endTime!.isAfter(DateTime.now()) && call.status != StatusEnum.I) {
-          debugPrint("Encontrou receiver ${call.receiver.email}");
-          SharedPopUps().genericPopUp(context,
-              title: "Chamado!!",
-              description: "Você recebeu um chamado!",
-              acceptButtonText: "OK",
-              acceptButtonOnPressed: () => Navigator.of(context).pop());
-          // FlutterRingtonePlayer.play(
-          //   android: AndroidSounds.alarm,
-          //   // android: AndroidSounds.ringtone,
-          //   ios: IosSounds.glass,
-          //   looping: true,
-          //   // Android only - API >= 28
-          //   volume: 1,
-          //   // Android only - API >= 28
-          //   asAlarm: false, // Android only - all APIs
-          // );
-          break;
-        }
-      }
-    }
-    // return widget;
-  }
-
   List<Marker> _getMarkers(List<User> hawkers) {
     var markers = <Marker>[];
 
@@ -382,299 +355,26 @@ class HomeWidget extends State<HomePage> {
             _controller.callHawker(context, hawker, userLocation!);
             Fluttertoast.showToast(msg: "Chamando vendedor...");
             Navigator.of(context).pop();
+            FunctionWidgets().showLoading(context);
           }),
         );
       },
     );
   }
 
-  _acceptPopUp(BuildContext context) async {
-    // TODO - componentizar
+  _acceptCallPopUp(BuildContext context, User caller) async {
     await showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration:
-                    BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Recebendo chamado de:",
-                        style: boldTitle.copyWith(fontSize: 25),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CircleAvatar(
-                              radius: 30,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                          "https://www.masslive.com/resizer/kNl3qvErgJ3B0Cu-WSBWFYc1B8Q=/arc-anglerfish-arc2-prod-advancelocal/public/W5HI6Y4DINDTNP76R6CLA5IWRU.jpeg")),
-                                  borderRadius: BorderRadius.all(Radius.circular(1000)),
-                                  color: kPrimaryLightColor,
-                                ),
-                              )),
-                          const SizedBox(
-                            width: 10,
-                          ),
-
-                          const Text("Usuário Cliente 001",
-                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
-                          // IconButton(
-                          //     onPressed: callButtonOnPressed,
-                          //     icon: const GradientIcon(
-                          //       icon: Icons.campaign,
-                          //       rectSize: 26,
-                          //       iconSize: 30,
-                          //     ))
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text(
-                            "Avaliação geral:",
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
-                          RatingBar.builder(
-                            initialRating: 4,
-                            ignoreGestures: true,
-                            minRating: 1,
-                            itemSize: 25,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
-                            itemBuilder: (context, _) => const Icon(
-                              Icons.star,
-                              color: kFourthLightColor,
-                            ),
-                            onRatingUpdate: (rating) => 0,
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Material(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(50),
-                        child: Row(
-                          // mainAxisSize: MainAxisSize.min,
-                          // crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: kPrimaryLightColor,
-                                      borderRadius: BorderRadius.circular(50)),
-                                  child: IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.done,
-                                      color: Colors.white,
-                                    ),
-                                    iconSize: 40,
-                                    splashRadius: 50,
-                                  ),
-                                ),
-                                Text(
-                                  "Aceitar",
-                                  style: boldTitle.copyWith(fontSize: 15),
-                                )
-                              ],
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: kSecondDarkColor,
-                                      borderRadius: BorderRadius.circular(50)),
-                                  child: IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.close,
-                                      color: Colors.white,
-                                    ),
-                                    iconSize: 40,
-                                    splashRadius: 50,
-                                  ),
-                                ),
-                                Text(
-                                  "Negar",
-                                  style: boldTitle.copyWith(fontSize: 15),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+        builder: (context) => AcceptCallWidget(
+              caller: caller,
             ));
   }
 
-  _ratingPopUp(BuildContext context) async {
-    // TODO - componentizar
+  _ratingPopUp(BuildContext context, User user) async {
     await showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration:
-                    BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Nos conte como foi o atendimento!",
-                        textAlign: TextAlign.center,
-                        style: boldTitle.copyWith(fontSize: 20),
-                      ),
-                      const Divider(color: Colors.black, height: 20, endIndent: 20, thickness: 1),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CircleAvatar(
-                              radius: 30,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                          "https://www.masslive.com/resizer/kNl3qvErgJ3B0Cu-WSBWFYc1B8Q=/arc-anglerfish-arc2-prod-advancelocal/public/W5HI6Y4DINDTNP76R6CLA5IWRU.jpeg")),
-                                  borderRadius: BorderRadius.all(Radius.circular(1000)),
-                                  color: kPrimaryLightColor,
-                                ),
-                              )),
-                          const SizedBox(
-                            width: 10,
-                          ),
-
-                          const Text("Usuário Cliente 001",
-                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
-                          // IconButton(
-                          //     onPressed: callButtonOnPressed,
-                          //     icon: const GradientIcon(
-                          //       icon: Icons.campaign,
-                          //       rectSize: 26,
-                          //       iconSize: 30,
-                          //     ))
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text(
-                            "Nota:",
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                          ),
-                          RatingBar.builder(
-                            initialRating: 0,
-                            minRating: 1,
-                            itemSize: 35,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
-                            itemBuilder: (context, _) => const Icon(
-                              Icons.star,
-                              color: kFourthLightColor,
-                            ),
-                            onRatingUpdate: (rating) => 0,
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      const Text(
-                        "Descrição:",
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                      ),
-                      Material(
-                        color: Colors.transparent,
-                        child: Container(
-                          color: Colors.grey.withOpacity(0.2),
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: TextField(
-                              maxLines: 4, //or null
-                              decoration: InputDecoration.collapsed(
-                                  hintText: "Comente sobre o atendimento...",
-                                  // fillColor: Colors.grey.withOpacity(0.3),
-                                  ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                            decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.3),
-                                borderRadius: BorderRadius.circular(50)),
-                            child: const Text(
-                              "Atendimento rápido",
-                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                            decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.3),
-                                borderRadius: BorderRadius.circular(50)),
-                            child: const Text(
-                              "Boa conversa",
-                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ));
+        builder: (context) => ReviewUserWidget(user: user));
   }
 }
