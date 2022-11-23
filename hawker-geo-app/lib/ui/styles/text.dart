@@ -43,3 +43,6 @@ const boldButtonText = TextStyle(
   fontWeight: FontWeight.bold,
   fontSize: 18,
 );
+
+const callerName =
+    TextStyle(fontWeight: FontWeight.w600, fontSize: 20, color: Colors.black, decoration: null);

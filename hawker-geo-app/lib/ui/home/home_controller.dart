@@ -99,6 +99,11 @@ class HomeController {
 
   docsToUserList(dynamic docs) {
     var users = <User>[];
+
+    if (_user != null && _user!.role != null && _user!.role == RoleEnum.ROLE_HAWKER) {
+      debugPrint("User é hawker");
+      return <User>[];
+    }
     docs.forEach((QueryDocumentSnapshot doc) {
       final dynamic data = doc.data();
 
@@ -224,7 +229,7 @@ class HomeController {
     var now = DateTime.now();
     _callRepo.saveOrUpdate(Call(
         active: true,
-        caller: User(),
+        caller: _user,
         receiver: hawker,
         startTime: now,
         endTime: now.add(const Duration(minutes: CALL_TIMER)),

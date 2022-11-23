@@ -34,7 +34,7 @@ class AcceptCallWidget extends StatelessWidget {
             children: [
               Text(
                 "Recebendo chamado de:",
-                style: boldTitle.copyWith(fontSize: 25),
+                style: boldTitle.copyWith(fontSize: 22),
               ),
               const SizedBox(
                 height: 12,
@@ -72,8 +72,7 @@ class AcceptCallWidget extends StatelessWidget {
                     width: 10,
                   ),
 
-                  const Text("Usuário Cliente 001",
-                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
+                  Text(caller.name!, style: callerName),
                   // IconButton(
                   //     onPressed: callButtonOnPressed,
                   //     icon: const GradientIcon(
@@ -129,7 +128,9 @@ class AcceptCallWidget extends StatelessWidget {
                           decoration: BoxDecoration(
                               color: kPrimaryLightColor, borderRadius: BorderRadius.circular(50)),
                           child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
                             icon: const Icon(
                               Icons.done,
                               color: Colors.white,
@@ -151,7 +152,9 @@ class AcceptCallWidget extends StatelessWidget {
                           decoration: BoxDecoration(
                               color: kSecondDarkColor, borderRadius: BorderRadius.circular(50)),
                           child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
                             icon: const Icon(
                               Icons.close,
                               color: Colors.white,

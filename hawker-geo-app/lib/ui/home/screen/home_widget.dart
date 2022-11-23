@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hawker_geo/core/model/call.dart';
@@ -222,13 +221,7 @@ class HomeWidget extends State<HomePage> {
               _scaffoldKey.currentState?.closeDrawer();
             });
           },
-          loginOnPressed: () async {
-            await _controller.showLoginModal(context).then((_) {
-              _getUserLocation();
-              _getUser();
-              setState(() {});
-            });
-          },
+          loginOnPressed: () => loginPopUp(),
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection(UserRepository.REPO_NAME).snapshots(),
@@ -347,16 +340,18 @@ class HomeWidget extends State<HomePage> {
       builder: (context) {
         return HawkerDetailsWidget(
           hawker: hawker,
-          callButtonOnPressed: () => SharedPopUps().genericPopUp(context,
-              title: "Criar chamado",
-              description: "Realmente deseja criar um chamado para esse vendedor?",
-              acceptButtonText: "Sim",
-              cancelButtonText: "Não", acceptButtonOnPressed: () {
-            _controller.callHawker(context, hawker, userLocation!);
-            Fluttertoast.showToast(msg: "Chamando vendedor...");
-            Navigator.of(context).pop();
-            FunctionWidgets().showLoading(context);
-          }),
+          callButtonOnPressed: () => _controller.user != null
+              ? SharedPopUps().genericPopUp(context,
+                  title: "Criar chamado",
+                  description: "Realmente deseja criar um chamado para esse vendedor?",
+                  acceptButtonText: "Sim",
+                  cancelButtonText: "Não", acceptButtonOnPressed: () {
+                  _controller.callHawker(context, hawker, userLocation!);
+                  Fluttertoast.showToast(msg: "Chamando vendedor...");
+                  Navigator.of(context).pop();
+                  FunctionWidgets().showLoading(context);
+                })
+              : loginPopUp(),
         );
       },
     );
@@ -366,8 +361,11 @@ class HomeWidget extends State<HomePage> {
     await showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => AcceptCallWidget(
-              caller: caller,
+        builder: (context) => Material(
+              color: Colors.transparent,
+              child: AcceptCallWidget(
+                caller: caller,
+              ),
             ));
   }
 
@@ -375,6 +373,15 @@ class HomeWidget extends State<HomePage> {
     await showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => ReviewUserWidget(user: user));
+        builder: (context) =>
+            Material(color: Colors.transparent, child: ReviewUserWidget(user: user)));
+  }
+
+  loginPopUp() async {
+    await _controller.showLoginModal(context).then((_) {
+      _getUserLocation();
+      _getUser();
+      setState(() {});
+    });
   }
 }
